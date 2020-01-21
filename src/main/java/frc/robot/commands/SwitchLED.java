@@ -7,21 +7,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-
-public class Drive extends CommandBase {
+public class SwitchLED extends CommandBase {
   /**
-   * Creates a new Drive.
+   * Creates a new SwitchLED.
    */
-  public double leftSpeed, rightSpeed;
 
-  
-  public Drive() {
+
+  public SwitchLED() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_driveTrain);
+    addRequirements(RobotContainer.limeSub);
   }
 
   // Called when the command is initially scheduled.
@@ -30,17 +28,11 @@ public class Drive extends CommandBase {
   {
   }
 
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
-		leftSpeed = RobotContainer.getLeftSpeed() * 0.2;
-		rightSpeed = RobotContainer.getRightSpeed() * 0.24; //adjusts for the right side being slower
-    RobotContainer.m_driveTrain.tankDrive(-leftSpeed, rightSpeed); //motors on the left are flipped 
-    
-    SmartDashboard.putNumber("left speed", RobotContainer.getLeftSpeed());
-    SmartDashboard.putNumber("right speed",RobotContainer.getRightSpeed());
+  public void execute() {
+
+      RobotContainer.limeSub.switchLED();
 
   }
 
@@ -49,9 +41,10 @@ public class Drive extends CommandBase {
   public void end(boolean interrupted) {
   }
 
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
