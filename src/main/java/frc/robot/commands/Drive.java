@@ -7,40 +7,38 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-
 
 public class Drive extends CommandBase {
   /**
    * Creates a new Drive.
    */
-  public double leftSpeed, rightSpeed;
-
+  public double xs, ys;
   
-  public Drive() {
+  public Drive()
+  {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_driveTrain);
+   
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() 
   {
+    
   }
-
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
+  public void execute()
   {
-		leftSpeed = RobotContainer.getLeftSpeed() * 0.2;
-		rightSpeed = RobotContainer.getRightSpeed() * 0.24; //adjusts for the right side being slower
-    RobotContainer.m_driveTrain.tankDrive(-leftSpeed, rightSpeed); //motors on the left are flipped 
-    
-    SmartDashboard.putNumber("left speed", RobotContainer.getLeftSpeed());
-    SmartDashboard.putNumber("right speed",RobotContainer.getRightSpeed());
+    xs = RobotContainer.getXboxXSpeed();
+    ys = RobotContainer.getXboxYSpeed();
+    RobotContainer.m_driveTrain.regDrive(xs, ys);
+  
 
   }
 

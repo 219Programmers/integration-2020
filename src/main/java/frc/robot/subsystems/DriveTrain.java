@@ -6,50 +6,94 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
+import com.revrobotics.CANEncoder;
+// imports for motors 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+// import for Motor Nums
 import frc.robot.Constants;
+// import for tank drive
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import frc.robot.commands.ExampleCommand;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.commands.Drive;
+import edu.wpi.first.wpilibj.MotorSafety;
 
-public class DriveTrain extends SubsystemBase
- {
+public class DriveTrain extends SubsystemBase {
+  /**
+   * Creates a new DriveTrain.
+   */
+  private CANSparkMax sparkFL, sparkFR, sparkBL, sparkBR;
+  private CANEncoder encoderFL, encoderFR, encoderBL, encoderBR;
+  public DifferentialDrive daryl;
+  private SpeedControllerGroup leftdrive, rightdrive;
+ 
 
-  private TalonSRX mfr, mfl, mbr, mbl;
+  
 
   public DriveTrain() 
   {
-    mfr = new TalonSRX(Constants.mfr);
-    mfl = new TalonSRX(Constants.mfl);
-    mbr = new TalonSRX(Constants.mbr);
-    mbl = new TalonSRX(Constants.mbl);
+    //controllers being constructed
+    sparkFL = new CANSparkMax(Constants.SPARKFL, MotorType.kBrushless);
+    sparkFR = new CANSparkMax(Constants.SPARKFR, MotorType.kBrushless);
+    sparkBL = new CANSparkMax(Constants.SPARKBL, MotorType.kBrushless);
+    sparkBR = new CANSparkMax(Constants.SPARKBR, MotorType.kBrushless);
+    /* encoders have to be constructed seperately in order to afford the stuttering problem that
+    occured in the Pre-Season of 2020. See documentation in the log for more 
+    details regarding the encoder problem. */
+
+
+    encoderFL = sparkFL.getEncoder();
+    encoderFR = sparkFR.getEncoder();
+    encoderBL = sparkBL.getEncoder();
+    encoderBR = sparkBR.getEncoder();
+
+    leftdrive = new SpeedControllerGroup(sparkFL, sparkBL);
+    rightdrive = new SpeedControllerGroup(sparkFR, sparkBR);
+    daryl = new DifferentialDrive(leftdrive, rightdrive);
   }
 
-  public void setTalonSpeed(double left, double right) 
+  public void regDrive(double speedL, double speedR)
   {
-    mfl.set(ControlMode.PercentOutput, left);
-    mbl.set(ControlMode.PercentOutput, left);
-    mfr.set(ControlMode.PercentOutput, right);
-    mbr.set(ControlMode.PercentOutput, right);
+      daryl.tankDrive(speedL, speedR);
+
   }
 
-  public void tankDrive(double left, double right)
+  public double getWheelPosFL()
   {
-    setTalonSpeed(left, right);
+    return encoderFL.getPosition();
   }
 
-  public void initDefaultCommand()
+  public double getWheelPosFR()
   {
-    setDefaultCommand(new Drive());
-    //setDefaultCommand(new Sparxy());
-    // TODO Auto-generated method stub
+    return encoderFR.getPosition();
   }
+
+  public double getWheelPosBL()
+  {
+    return encoderBL.getPosition();
+  }
+
+  public double getWheelPosBR()
+  {
+    return encoderBR.getPosition();
+  }
+
+  public double getWheelVelocity()
+  {
+    return encoderFL.getVelocity();
+  }
+
   @Override
   public void periodic() 
   {
-    // This method will be called once per scheduler run
+   // setDefaultCommand(new Drive(getXboxXSpeed(), getXboxYSpeed()));
   }
+
+
 }
