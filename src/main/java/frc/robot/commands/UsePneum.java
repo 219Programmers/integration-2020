@@ -9,15 +9,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class UsePneum extends CommandBase {
-      /**
-     * @param port PCM port wired to open/A side of valve. Close/B side is wired to PCM next port.
-     * Assumes PCM CAN Id 0.
-     */
-    public UsePneum()
-    {
-        addRequirements(Robot.m_robotContainer.pneum);
+  /**
+   * @param port PCM port wired to open/A side of valve. Close/B side is wired to
+   *             PCM next port. Assumes PCM CAN Id 0.
+   */
+  public UsePneum() {
+    addRequirements(RobotContainer.pneum);
     }
 
     

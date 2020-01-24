@@ -1,4 +1,3 @@
-
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -11,6 +10,23 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import javax.lang.model.util.ElementScanner6;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ExampleCommand;
+//import frc.robot.subsystems.LimeVisionSubsystem;
+
+
+
+import edu.wpi.first.wpilibj.smartdashboard.*;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -21,6 +37,15 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   public static RobotContainer m_robotContainer;
+  public double leftSpeed;
+  public double rightSpeed;
+  public static double target;
+  private static double x;
+  private static double y;
+  public static double area;
+ 
+
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -31,6 +56,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+  
+   // SmartDashboard.putBoolean("Safety", safe.isSafetyEnabled());
+   
   }
 
   /**
@@ -46,7 +74,28 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    NetworkTableEntry tv = table.getEntry("tv");
+
+
+     //read values periodically
+    x = tx.getDouble(0.0);
+    y = ty.getDouble(0.0);
+    area = ta.getDouble(0.0);
+    target = tv.getDouble(0.0);
+
+
+   // post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putNumber("Target ", target);
+
     CommandScheduler.getInstance().run();
+   
   }
 
   /**
@@ -78,6 +127,38 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
+    CommandScheduler.getInstance().run();
+
+    //checks if there is a valid target and turns to the right if there isn't one
+    if(target == 0)
+    {
+      RobotContainer.m_driveTrain.regDrive(0.2, 0.2);
+    }
+    else //when it finds the target
+    {
+      //adjusts so it isn't further left than -4 on the screen 
+      if(x < -4)
+      {
+        RobotContainer.m_driveTrain.regDrive(0.2, -0.5);
+      }
+      //adjusts so it isn't further right than 4 on the screen
+      else if(x > 4)
+      {
+        RobotContainer.m_driveTrain.regDrive(0.5, -0.2);
+      }
+      else //drives straight if the x value is between -4 and 4
+      {
+        RobotContainer.m_driveTrain.regDrive(0.2, -0.2);
+      }
+    }
+
+    //checks the vertical height, if it is the very top(its close) then it stops at that position on the screen
+    if(y > 20)
+    {
+      RobotContainer.m_driveTrain.regDrive(0, 0);
+    }
+  
   }
 
   @Override
@@ -95,7 +176,9 @@ public class Robot extends TimedRobot {
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
+  public void teleopPeriodic()
+  {
+    CommandScheduler.getInstance().run();
   }
 
   @Override
