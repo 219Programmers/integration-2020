@@ -7,43 +7,50 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.ColorSensor;
-public class ScanClosestColor extends CommandBase {
+import frc.robot.RobotContainer;
+
+public class FeedShooter extends CommandBase {
   /**
-   * Creates a new ScanClosestColor.
+   * Creates a new FeedShooter.
    */
-  public ScanClosestColor() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.m_robotContainer.m_cs);
+  public int numbPCells;
+  public double speed;
+  public boolean direction;
+  public FeedShooter(int pCells , boolean direc) {
+    addRequirements(RobotContainer.gibShoot);
+    numbPCells = pCells;
+    speed = .3;
+    direction = direc;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Gets the closest color and displays it to dashboard
-    final Color detected = Robot.m_robotContainer.m_cs.getClosest();
-    SmartDashboard.putString("Closest Color RGB", detected.red + " " + detected.green + " " + detected.blue);
-    //Displays what rgb to color sensor is seeing
-    Robot.m_robotContainer.m_cs.displayRGB();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    //if lazer triggered, numbPCells--;
+    if(direction)
+      RobotContainer.gibShoot.runIndCor();
+    else
+      RobotContainer.gibShoot.runIndCor();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(final boolean interrupted) {
+  public void end(boolean interrupted) {
+    RobotContainer.gibShoot.stopIndCor();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    if(numbPCells<=0)
+      return true;
+    return false;
   }
 }

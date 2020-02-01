@@ -7,43 +7,46 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.ColorSensor;
-public class ScanClosestColor extends CommandBase {
+import frc.robot.RobotContainer;
+
+public class Auton extends CommandBase {
   /**
-   * Creates a new ScanClosestColor.
+   * Creates a new Auton.
    */
-  public ScanClosestColor() {
+  public Timer time;
+  public Auton() {
+    addRequirements(RobotContainer.m_driveTrain);
+    
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.m_robotContainer.m_cs);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Gets the closest color and displays it to dashboard
-    final Color detected = Robot.m_robotContainer.m_cs.getClosest();
-    SmartDashboard.putString("Closest Color RGB", detected.red + " " + detected.green + " " + detected.blue);
-    //Displays what rgb to color sensor is seeing
-    Robot.m_robotContainer.m_cs.displayRGB();
+    time.start();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(time.get() < 4)
+    { 
+       RobotContainer.m_driveTrain.regDrive(0.25, 0.25);
+    }    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(final boolean interrupted) {
+  public void end(boolean interrupted) {
+    RobotContainer.m_driveTrain.regDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return time.get()>4;
   }
 }

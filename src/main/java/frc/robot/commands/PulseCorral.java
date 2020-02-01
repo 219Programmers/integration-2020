@@ -10,29 +10,49 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class SwitchLED extends CommandBase {
+public class PulseCorral extends CommandBase {
   /**
-   * Creates a new SwitchLED.
+   * Creates a new PulseCorral.
    */
-
-
-  public SwitchLED() {
+  int numPowerCells; 
+  boolean lazerTrip, lazerTripTwo;
+  public PulseCorral() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.limeSub);
+    addRequirements(RobotContainer.gibShoot);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
+    numPowerCells = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-      RobotContainer.limeSub.switchLED();
-
+    boolean scanned = false;
+    boolean scannedTwo = false;
+    //Counts when a ball has been seen by the scanner and then stops beeing seen
+    if(lazerTrip && !scanned)
+    {
+      RobotContainer.gibShoot.ballAmount++;
+    }
+    lazerTrip = scanned;
+    if(RobotContainer.gibShoot.ballAmount<5 && scanned)
+    {
+      RobotContainer.gibShoot.runCor();
+    }
+    else
+    {
+      RobotContainer.gibShoot.stopCor();
+    }
+    //Decreases count when a ball has been seen by the scanner and then stops beeing seen
+    if(!scannedTwo && lazerTripTwo)
+    {
+      RobotContainer.gibShoot.ballAmount--;
+    }
+    lazerTripTwo = scannedTwo;
+    // hiiiiiiiiiii simeon look at meeeeeeeeeeeee i am a computer and my pupils are dilateddddddddddddddddddddddddddd ;)
   }
 
   // Called once the command ends or is interrupted.
@@ -40,10 +60,9 @@ public class SwitchLED extends CommandBase {
   public void end(boolean interrupted) {
   }
 
-
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
