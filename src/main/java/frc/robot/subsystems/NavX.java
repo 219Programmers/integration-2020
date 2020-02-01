@@ -6,26 +6,32 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class TestMotot extends SubsystemBase {
+public class NavX extends SubsystemBase {
+
+  //This is the navX
+  public AHRS ahrs = new AHRS(Constants.AHRSPort);
+
   /**
-   * Creates a new TestMotot.
+   * Creates a new NavX.
    */
-  private WPI_TalonSRX spinMotor;
-  public TestMotot() 
-  {
-      //spinMotor = new WPI_TalonSRX(Constants.SPINPORT);
+  public NavX() {
+    ahrs.enableLogging(true);
+    
   }
-  public void runMotor(double x)
-  {
-    spinMotor.set(x);
-  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Yaw", ahrs.getYaw());
+    SmartDashboard.putNumber("Roll", ahrs.getRoll());
   }
+
+  
 }

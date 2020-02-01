@@ -6,15 +6,15 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
 public class LimeVisionSubsystem extends SubsystemBase {
- // Put methods for controlling this subsystem
+  	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	
 	//Create network table
@@ -159,4 +159,6 @@ public class LimeVisionSubsystem extends SubsystemBase {
 		getLimetable().getEntry("pipeline").setDouble(pipeline);
 		SmartDashboard.putNumber("Camera Mode", pipeline);
 	}
+	
 }
+

@@ -32,7 +32,7 @@ public class DriveTrain extends SubsystemBase {
   private CANEncoder encoderFL, encoderFR, encoderBL, encoderBR;
   public DifferentialDrive daryl;
   private SpeedControllerGroup leftdrive, rightdrive;
- 
+  public boolean go;
 
   
 
@@ -53,6 +53,7 @@ public class DriveTrain extends SubsystemBase {
     encoderBL = sparkBL.getEncoder();
     encoderBR = sparkBR.getEncoder();
 
+    go = true;
     leftdrive = new SpeedControllerGroup(sparkFL, sparkBL);
     rightdrive = new SpeedControllerGroup(sparkFR, sparkBR);
     daryl = new DifferentialDrive(leftdrive, rightdrive);

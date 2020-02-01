@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Motor extends SubsystemBase {
-  static TalonSRX left = new TalonSRX(Constants.FRONTLEFT);
-  static TalonSRX leftTwo = new TalonSRX(Constants.BACKLEFT);
-  static TalonSRX right = new TalonSRX(Constants.FRONTRIGHT);
-  static TalonSRX rightTwo = new TalonSRX(Constants.BACKRIGHT);
+  public static TalonSRX left = new TalonSRX(Constants.FRONTLEFT);
+  public static TalonSRX leftTwo = new TalonSRX(Constants.BACKLEFT);
+  public static TalonSRX right = new TalonSRX(Constants.FRONTRIGHT);
+  public static TalonSRX rightTwo = new TalonSRX(Constants.BACKRIGHT);
   /**
    * Creates a new Motor.
    */
@@ -42,6 +42,13 @@ public class Motor extends SubsystemBase {
     rightTwo.set(ControlMode.PercentOutput, speed);
   }
 
+  public static void moveForward(double speedLeft, double speedRight)
+  {
+    left.set(ControlMode.PercentOutput, speedLeft);
+    leftTwo.set(ControlMode.PercentOutput, speedLeft);
+    right.set(ControlMode.PercentOutput, -speedRight);
+    rightTwo.set(ControlMode.PercentOutput, -speedRight);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

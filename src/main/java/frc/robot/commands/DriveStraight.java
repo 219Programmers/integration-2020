@@ -7,43 +7,57 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.ColorSensor;
-public class ScanClosestColor extends CommandBase {
+import frc.robot.RobotContainer;
+
+public class DriveStraight extends CommandBase {
+
+  public Timer time;
+  public double length;
+  public double direction;
   /**
-   * Creates a new ScanClosestColor.
+   * Creates a new DriveStraight.
    */
-  public ScanClosestColor() {
+  public DriveStraight(double t, double direction) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.m_robotContainer.m_cs);
+    addRequirements(RobotContainer.m_mot, RobotContainer.m_navx);
+    time = new Timer();
+    length = t;
+    this.direction = direction;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Gets the closest color and displays it to dashboard
-    final Color detected = Robot.m_robotContainer.m_cs.getClosest();
-    SmartDashboard.putString("Closest Color RGB", detected.red + " " + detected.green + " " + detected.blue);
-    //Displays what rgb to color sensor is seeing
-    Robot.m_robotContainer.m_cs.displayRGB();
+    time.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double lSpeed = SmartDashboard.getNumber("Speed", 0.3);
+    double rSpeed = SmartDashboard.getNumber("Speed", 0.3);
+    if(RobotContainer.m_navx.ahrs.getYaw()<direction)
+    {
+    lSpeed+=-0.05*(RobotContainer.m_navx.ahrs.getYaw()-direction);
+    }
+    else{
+    rSpeed+=0.05*(RobotContainer.m_navx.ahrs.getYaw()-direction);
+    }
+    RobotContainer.m_mot.moveForward(lSpeed, rSpeed); 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(final boolean interrupted) {
+  public void end(boolean interrupted) {
+    RobotContainer.m_mot.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return time.get()>length;
   }
 }
