@@ -52,7 +52,7 @@ public class PulseCorral extends CommandBase {
       RobotContainer.gibShoot.ballAmount--;
     }
     lazerTripTwo = scannedTwo;
-    // hiiiiiiiiiii simeon look at meeeeeeeeeeeee i am a computer and my pupils are dilateddddddddddddddddddddddddddd ;)
+    
   }
 
   // Called once the command ends or is interrupted.

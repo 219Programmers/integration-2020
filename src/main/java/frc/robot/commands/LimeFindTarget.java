@@ -7,56 +7,59 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
-public class Drive extends CommandBase {
+public class LimeFindTarget extends CommandBase {
   /**
-   * Creates a new Drive.
+   * Creates a new LimeFindTarget.
    */
-  public double xs, ys;
-  
-  public Drive()
-  {
+  public LimeFindTarget() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_driveTrain);
+    addRequirements(RobotContainer.limeSub);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
-    
+  public void initialize() {
+    SmartDashboard.putString("Shoot", " is bad");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
-  {
-    // gets the xbox joysticks and sets the read axis position to how fast the drive should GO
-    xs = RobotContainer.getLeftSpeed();
-    ys = RobotContainer.getRightSpeed();
-    // james wrote this code to see if they wanted to reverse the robot 
-    if(!RobotContainer.m_driveTrain.reverse)
+  public void execute() {
+    //checks if there is a valid target and turns to the right if there isn't one
+    if(Robot.target != 0)
     {
-      RobotContainer.m_driveTrain.regDrive(xs, ys);
-    }
-    else
-    {
-      RobotContainer.m_driveTrain.regDrive(-ys, -xs); //Reverse
+      //adjusts so it isn't further left than -4 on the screen 
+      if(Robot.x < -4)
+      {
+        RobotContainer.m_driveTrain.regDrive(0.3, 0.35);
+      }
+      //adjusts so it isn't further right than 4 on the screen
+      else if(Robot.x > 4)
+      {
+        RobotContainer.m_driveTrain.regDrive(0.35, 0.3);
+      }
+      else //drives straight if the x value is between -4 and 4
+      {
+        RobotContainer.m_driveTrain.regDrive(0.3, 0.3);
+        
+      }
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // drive will stop if something bad happens or another command needs the subsystem.
-    RobotContainer.m_driveTrain.regDrive(0, 0);
+    SmartDashboard.putString("Shoot", " is good");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Robot.target==0;
   }
 }

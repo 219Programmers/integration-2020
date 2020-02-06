@@ -28,6 +28,8 @@ public class Stabilize extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // for the climber, will level us based on the roll which is obtained from the NavX. 
+    // don't have the motor or subsystem for this created yet, as of 2/3 we don't know anything for the climber.
     double rickRoll = RobotContainer.m_navx.ahrs.getRoll();
     double moveAmount = 0;
     if(rickRoll<0)

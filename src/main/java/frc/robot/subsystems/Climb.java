@@ -18,24 +18,31 @@ import frc.robot.Constants;
 
 public class Climb extends SubsystemBase {
   public CANSparkMax spark1;
+  public CANSparkMax spark2;
   public CANEncoder encoderSpark1;
+  public boolean allowClimb;
   /**
    * Creates a new Climb.
    */
   public Climb() {
-    spark1 = new CANSparkMax(Constants.CCAN, MotorType.kBrushless);
+    spark1 = new CANSparkMax(Constants.CLIMB, MotorType.kBrushless);
     encoderSpark1 = spark1.getEncoder();
-    spark1.setIdleMode(IdleMode.kBrake);
+    // in brake mode bc it allows the encoder to be more accurate
+    spark1.setIdleMode(IdleMode.kBrake); 
+    allowClimb = false;
   }
   //Makes motor spin one way
   public void climbUp(double speed)
   {
     spark1.set(speed);
+    spark2.set(speed);
   }
+
   //Makes motor spin down
   public void climbDown(double speed)
   {
     spark1.set(-speed);
+    spark2.set(-speed);
   }
 
   @Override

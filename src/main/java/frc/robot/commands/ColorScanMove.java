@@ -29,10 +29,12 @@ public class ColorScanMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // moves forward if it sees red FOR TESTING PURPOSES ONLY
     if(Robot.m_robotContainer.m_cs.getClosest() == Robot.m_robotContainer.m_cs.colors[2])
     {
       Motor.moveForward(0.5);
     }
+    // MOVES THE ROBOT BACK IF IT SEES YELLOW, FOR TESTING PURPOSE
     else if(Robot.m_robotContainer.m_cs.getClosest() == Robot.m_robotContainer.m_cs.colors[3]){
       Motor.moveBack(0.5);
     }
@@ -51,6 +53,7 @@ public class ColorScanMove extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // if it saw blue it stopped it's addiction to google baseball
     return Robot.m_robotContainer.m_cs.getClosest() == Robot.m_robotContainer.m_cs.colors[0];
   }
 }

@@ -22,6 +22,7 @@ public class SinglePneum extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // opens the single pnuematics piston and doesn't close it. 
     Robot.m_robotContainer.pneumSingle.Open();
   }
 

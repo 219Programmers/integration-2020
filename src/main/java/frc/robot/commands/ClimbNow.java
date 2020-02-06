@@ -20,8 +20,10 @@ public class ClimbNow extends CommandBase {
    */
   public ClimbNow(final boolean upDown, double climbSpeed) {
     addRequirements(RobotContainer.mongClimb);
+    //Gets the direction depending on if the climber is up or down
     direction = upDown;
-    speed = SmartDashboard.getNumber("mongSpeed", .3);
+    //Gets speed from smart dashboard
+    speed = climbSpeed;
     
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -29,40 +31,37 @@ public class ClimbNow extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turnAmount = SmartDashboard.getNumber("turn", 15);
-    speed = SmartDashboard.getNumber("mongSpeed", .3);
-    if(direction)
-    {
-      RobotContainer.mongClimb.encoderSpark1.setPosition(0);
-    }
-    else
-    {
-      RobotContainer.mongClimb.encoderSpark1.setPosition(turnAmount);
-    }
-   
+    RobotContainer.mongClimb.climbUp(direction?speed:-speed);
+    // //Goes to a specific position of the motor
+    // turnAmount = SmartDashboard.getNumber("turn", 15);
+    // //Gets speed from smart dashboard
+    // speed = SmartDashboard.getNumber("mongSpeed", .3);
+    // //If the climber is down set position to zero else set it to the turn amount
+    // RobotContainer.mongClimb.encoderSpark1.setPosition(direction?0:turnAmount);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!direction)
-    {
-      if(RobotContainer.mongClimb.encoderSpark1.getPosition()>0)
-      {
-        RobotContainer.mongClimb.climbDown(speed);
-      }
-    }
-    else 
-    {
-      if(RobotContainer.mongClimb.encoderSpark1.getPosition()<turnAmount)
-      {
-        RobotContainer.mongClimb.climbUp(speed);
-      }
-    }
-    // if(direction)
-    //   RobotContainer.mongClimb.climbUp(speed);
-    // else
-    //   RobotContainer.mongClimb.climbDown(speed);
+    // //Depending on the direction go up or down
+    // if(!direction)
+    // {
+    //   if(RobotContainer.mongClimb.encoderSpark1.getPosition()>0)
+    //   {
+    //     RobotContainer.mongClimb.climbDown(speed);
+    //   }
+    // }
+    // else 
+    // {
+    //   if(RobotContainer.mongClimb.encoderSpark1.getPosition()<turnAmount)
+    //   {
+    //     RobotContainer.mongClimb.climbUp(speed);
+    //   }
+    // }
+    // // if(direction)
+    // //   RobotContainer.mongClimb.climbUp(speed);
+    // // else
+    // //   RobotContainer.mongClimb.climbDown(speed);
   }
 
   // Called once the command ends or is interrupted.
@@ -74,11 +73,6 @@ public class ClimbNow extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!direction&&RobotContainer.mongClimb.encoderSpark1.getPosition()>0)
-      return false;
-    if(direction&&RobotContainer.mongClimb.encoderSpark1.getPosition()<turnAmount)
-      return false;
-    return true;
-    // return false;
+    return false;
   }
 }

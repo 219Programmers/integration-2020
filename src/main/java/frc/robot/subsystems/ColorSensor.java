@@ -10,14 +10,15 @@ package frc.robot.subsystems;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ColorSensor extends SubsystemBase {
-  private ColorSensorV3 scan = new ColorSensorV3(Port.kMXP);
+  // color sensor that goes with rev robotics v3, from the I2C port (usually there is only one)
+  private ColorSensorV3 scan = new ColorSensorV3(Constants.COLOR_SENSOR_PORT);
+  // array of colors that match the control panel: blue, green, red, yellow
   public Color[] colors = { ColorMatch.makeColor(0.13, 0.42, 0.44),
       ColorMatch.makeColor(0.16, 0.57, 0.25), ColorMatch.makeColor(0.5, 0.35, 0.13),
       ColorMatch.makeColor(0.31, 0.55, 0.12) };
@@ -29,10 +30,9 @@ public class ColorSensor extends SubsystemBase {
     // colors[1] = ColorMatch.makeColor(SmartDashboard.getNumber("GreenR", 0.16), SmartDashboard.getNumber("GreenG", 0.57), SmartDashboard.getNumber("GreenB", 0.25));
     // colors[2] = ColorMatch.makeColor(SmartDashboard.getNumber("RedR", 0.5), SmartDashboard.getNumber("RedG", 0.35), SmartDashboard.getNumber("RedB", 0.13));
     // colors[3] = ColorMatch.makeColor(SmartDashboard.getNumber("YellowR", 0.31), SmartDashboard.getNumber("YellowG", 0.55), SmartDashboard.getNumber("YellowB", 0.12));
-  
   }
 
-  //Gets how different two colors are based on their rgb values (the higher the number the farther the are apart)
+  //Gets how different two colors are based on their rgb values (the higher the number the farther they are apart)
   public static double colorDifference(Color compare, Color compareTwo)
   {
     return Math.abs(compareTwo.red - compare.red) + Math.abs(compareTwo.blue - compare.blue) + Math.abs(compareTwo.green - compare.green);
@@ -53,6 +53,7 @@ public class ColorSensor extends SubsystemBase {
     String calibrate = SmartDashboard.getString("Calibrate", "").toLowerCase();
     if(calibrate.equals("red"))
     {
+      // put this for testing purposes to see how close the colors were to each other. 
       SmartDashboard.putNumber("Previous red difference", colorDifference(colorScanned, colors[2]));
       colors[2] = colorScanned;
       SmartDashboard.putNumber("RedR", colorScanned.red);
@@ -96,7 +97,9 @@ public class ColorSensor extends SubsystemBase {
   public static Color compareColors(final Color[] colorArr, final Color compare) {
     Color result = colorArr[0];
     double differentLow = 3;
-    for (final Color x : colorArr) {
+    // going through each color in the given array of colors and matching it to the color that is currently being scanned
+    for (final Color x : colorArr) 
+    {
       final double currentDiff = colorDifference(x, compare);
       if (currentDiff < differentLow) {
         differentLow = currentDiff;

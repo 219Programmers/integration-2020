@@ -8,28 +8,32 @@
 package frc.robot.subsystems;
  
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
  
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
  
 public class Harvester extends SubsystemBase {
  
-  TalonSRX TalonA;
-  TalonSRX TalonB;
+  WPI_TalonSRX TalonA;
+  WPI_TalonSRX TalonB;
   // TalonSRX TalonC;
-  TalonSRX indexMoto;
+  WPI_TalonSRX indexMoto;
  
+  // saves to see if the harvester's bar is up or down yeye
   private boolean up;
  
   /**
    * Creates a new Harvester.
    */
-  public Harvester() {
-    TalonA = new TalonSRX(Constants.HARVESTERTALONA);
-    TalonB = new TalonSRX(Constants.HARVESTERTALONB);
+  public Harvester() 
+  {
+    TalonA = new WPI_TalonSRX(Constants.HARVESTERTALONA);
+    TalonB = new WPI_TalonSRX(Constants.HARVESTERTALONB);
     // TalonC = new TalonSRX(Constants.HARVESTERTALONC);
-    indexMoto = new TalonSRX(Constants.IND);
+
+    // seperate from the actual harvester, in the same subsystem because they should be moving at the same rate. 
+    indexMoto = new WPI_TalonSRX(Constants.IND);
     up = true;
   }
  
