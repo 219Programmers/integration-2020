@@ -13,16 +13,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 
-public class Compression extends SubsystemBase {
+public class Compression extends SubsystemBase 
+{
+	// ask simeon where the 
   AnalogInput pressureSensor = new AnalogInput(3);
-	Compressor compressor;
-
-	private static final double kMaxPressure = 2.55;
-
-	public Compression() {
-		if (Robot.isReal()) {
-			compressor = new Compressor();
-		}
+  Compressor compressor;
+  private static final double kMaxPressure = 2.55;
+  public Compression() {
+	  // checking to see if the robot exists beyond our minds
+	if (Robot.isReal()) 
+	{
+		compressor = new Compressor();
+	}
 
 		//LiveWindow.addSensor("Pneumatics", "Pressure Sensor", pressureSensor);
 	}
@@ -32,10 +34,10 @@ public class Compression extends SubsystemBase {
 	 * Start the compressor going. The compressor automatically starts and stops
 	 * as it goes above and below maximum pressure.
 	 */
-	public void start() {
-		if (Robot.isReal()) {
-      compressor.start();
-		}
+	public void start() 
+	{
+		compressor.start();
+
 	}
 
   public void stop()
@@ -45,12 +47,10 @@ public class Compression extends SubsystemBase {
 	/**
 	 * @return Whether or not the system is fully pressurized.
 	 */
-	public boolean isPressurized() {
-		if (Robot.isReal()) {
-			return kMaxPressure <= pressureSensor.getVoltage();
-		} else {
-			return true; // NOTE: Simulation always has full pressure
-		}
+	public boolean isPressurized() 
+	{
+		return kMaxPressure <= pressureSensor.getVoltage();
+	
 	}
 
 	/**

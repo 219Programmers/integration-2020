@@ -24,6 +24,7 @@ public class CamMode extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
+    // switches the LED off and on, going between the camera and vision
     RobotContainer.limeSub.switchCamera();
   }
 

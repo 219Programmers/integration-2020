@@ -29,7 +29,9 @@ public class NavX extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    // gets the linear angle that robot drives at
     SmartDashboard.putNumber("Yaw", ahrs.getYaw());
+    // gets the rotational angle
     SmartDashboard.putNumber("Roll", ahrs.getRoll());
   }
 

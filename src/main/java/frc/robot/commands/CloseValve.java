@@ -31,6 +31,7 @@ public class CloseValve extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
+    // uses the subsystem method to close the value. that's all it does. 
     Robot.m_robotContainer.pneum.SetB();
   }
 

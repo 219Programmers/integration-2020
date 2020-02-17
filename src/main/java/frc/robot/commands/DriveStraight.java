@@ -24,7 +24,9 @@ public class DriveStraight extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_mot, RobotContainer.m_navx);
     time = new Timer();
+    //The amount of time in seconds to move forward
     length = t;
+    //Moves in specific yaw direction
     this.direction = direction;
   }
 
@@ -37,12 +39,15 @@ public class DriveStraight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //Gets the speed to move
     double lSpeed = SmartDashboard.getNumber("Speed", 0.3);
     double rSpeed = SmartDashboard.getNumber("Speed", 0.3);
+    //If it's off to the left speed up the left side
     if(RobotContainer.m_navx.ahrs.getYaw()<direction)
     {
     lSpeed+=-0.05*(RobotContainer.m_navx.ahrs.getYaw()-direction);
     }
+    //If it's off to the right speed up the right side
     else{
     rSpeed+=0.05*(RobotContainer.m_navx.ahrs.getYaw()-direction);
     }
@@ -58,6 +63,7 @@ public class DriveStraight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //Stops at specific length
     return time.get()>length;
   }
 }

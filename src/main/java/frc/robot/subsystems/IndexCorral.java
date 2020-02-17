@@ -11,14 +11,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class IndexCorral extends SubsystemBase {
   /**
    * Creates a new IndexCorral.
    */
-  public static final TalonSRX beltMoto = new TalonSRX(Constants.BELT);
+  public static final WPI_TalonSRX beltMoto = new WPI_TalonSRX(Constants.BELT);
 
+  // will be utilizing this once the sensors come in on 2/6
   public static int ballAmount;
   
   public IndexCorral() {
@@ -32,29 +33,16 @@ public class IndexCorral extends SubsystemBase {
     ballAmount = 0;
   }
 
-  public void runInd() // run just indexer
-  {
-  
-  }
-
-  public void stopInd() // run just indexer
-  {
-    
-  }
-
-  public void stopCor() // run just indexer
+  public void stopCor() // stopping the corral motor
   {
     beltMoto.set(ControlMode.PercentOutput, 0);  
   }
 
-  public void runCor() // rrun just corral
+  public void runCor() // running the corral motor
   {
     beltMoto.set(ControlMode.PercentOutput, Constants.BELTSPEED);
   }
-  public void stopIndCor()
-  {
-    beltMoto.set(ControlMode.PercentOutput, 0);
-  }
+
 
 
 

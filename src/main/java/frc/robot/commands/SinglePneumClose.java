@@ -22,6 +22,7 @@ public class SinglePneumClose extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // does the opposite of SinglePneum, closes the open valve of the single pnuematics piston
     Robot.m_robotContainer.pneumSingle.Close();
   }
 

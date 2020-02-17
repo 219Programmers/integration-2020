@@ -12,12 +12,15 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.IndexCorral;
 
 public class Harvest extends CommandBase {
+  boolean reverse;
   /**
    * Creates a new Harvest.
    */
-  public Harvest() {
+  public Harvest(boolean reverse) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_harvester);
+    //if its reversed this is true
+    this.reverse = reverse;
   }
 
   // Called when the command is initially scheduled.
@@ -28,18 +31,22 @@ public class Harvest extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean scanned = false;
-    if(IndexCorral.ballAmount<5 && !(IndexCorral.ballAmount == 4 && scanned))
+    //If its not reversed get right trigger and if its reversed get left trigger
+    if((RobotContainer.getRightTrigger() && !reverse) || (RobotContainer.getLeftTrigger() && reverse))
     {
-      RobotContainer.m_harvester.harvest(0.5);
-    }
-    else
-    {
-      if(IndexCorral.ballAmount == 4 && scanned)
+      boolean scanned = false;
+      if(IndexCorral.ballAmount<5 && !(IndexCorral.ballAmount == 4 && scanned))
       {
-        IndexCorral.ballAmount++;
+        RobotContainer.m_harvester.harvest(reverse? -0.5: 0.5);
       }
-      RobotContainer.m_harvester.stopHarvest();
+      else
+      {
+        if(IndexCorral.ballAmount == 4 && scanned)
+        {
+          IndexCorral.ballAmount++;
+        }
+        RobotContainer.m_harvester.stopHarvest();
+      }
     }
   }
 

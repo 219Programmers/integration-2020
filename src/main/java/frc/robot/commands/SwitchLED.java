@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
@@ -30,7 +31,7 @@ public class SwitchLED extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    // turns the LEDS on or off based on what they were before. 
       RobotContainer.limeSub.switchLED();
 
   }

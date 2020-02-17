@@ -11,11 +11,12 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class Pneumatics extends SubsystemBase {
   private Solenoid  valveOpenSide, valveCloseSide;
 
-  public double           solenoidSlideTime;
+  public double solenoidSlideTime;
 
   /**
    * @param port PCM port wired to open/A side of valve. Close/B side is wired to PCM next port.
@@ -37,10 +38,13 @@ public class Pneumatics extends SubsystemBase {
   //portOpen is the open port, portClose is the close port, slideTime is the time it takes to slide
   public Pneumatics(int portOpen, int portClose, double slideTime)
   {
+        if (Robot.isReal()) 
+	{
           valveOpenSide = new Solenoid(Constants.PCMCAN, portOpen);
           valveCloseSide = new Solenoid(Constants.PCMCAN, portClose);
 
           solenoidSlideTime = slideTime;
+        }
   }
 
   /**

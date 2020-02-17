@@ -19,6 +19,7 @@ public class TurnAndStop extends SequentialCommandGroup {
   public TurnAndStop() {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
+    // the new command group that allows two commands to go right after each other which is good for having one button do the commands. 
     super(new ColorWheel(), new FindColor());
   }
 }
