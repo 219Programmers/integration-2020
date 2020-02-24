@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class SinglePneumatics extends SubsystemBase 
-{
+public class SinglePneumatics extends SubsystemBase {
   private final Solenoid valveOpenSide;
 
         /**

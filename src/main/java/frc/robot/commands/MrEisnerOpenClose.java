@@ -7,39 +7,38 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class Stabilize extends CommandBase {
+public class MrEisnerOpenClose extends CommandBase {
   /**
-   * Creates a new Stabilize.
+   * Creates a new MrEisnerOpenClose.
    */
-  public Stabilize() {
+  public MrEisnerOpenClose() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_navx);
+    addRequirements(RobotContainer.m_esol);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    if(RobotContainer.m_esol.closed)
+    {
+      RobotContainer.m_esol.open();
+    }
+    else
+    {
+      RobotContainer.m_esol.close();
+    }
+    RobotContainer.m_esol.closed = !RobotContainer.m_esol.closed;
+    SmartDashboard.putString("AHHHHHH", "AHHHHHHHH!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double rickRoll = RobotContainer.m_navx.ahrs.getRoll();
-    double moveAmount = 0;
-    if(rickRoll<0)
-    {
-      //MoveRight
-      moveAmount+=0.01*RobotContainer.m_navx.ahrs.getRoll();
-    }
-    else
-    {
-      //MoveLeft
-      moveAmount+=0.01*RobotContainer.m_navx.ahrs.getRoll();
-    }
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -50,6 +49,6 @@ public class Stabilize extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

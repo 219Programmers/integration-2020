@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import frc.robot.commands.ExampleCommand;
 import edu.wpi.first.wpilibj.smartdashboard.*;
-
 import frc.robot.commands.Drive;
 import edu.wpi.first.wpilibj.MotorSafety;
 
@@ -29,30 +29,31 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   private CANSparkMax sparkFL, sparkFR, sparkBL, sparkBR;
-  private CANEncoder encoderFL, encoderFR, encoderBL, encoderBR;
+  public CANEncoder encoderFL, encoderFR, encoderBL, encoderBR;
   public DifferentialDrive daryl;
   private SpeedControllerGroup leftdrive, rightdrive;
-  public boolean reverse;
+  public boolean go;
 
   
 
   public DriveTrain() 
   {
-    //sparkmax controllers being constructed
+    //controllers being constructed
     sparkFL = new CANSparkMax(Constants.SPARKFL, MotorType.kBrushless);
     sparkFR = new CANSparkMax(Constants.SPARKFR, MotorType.kBrushless);
     sparkBL = new CANSparkMax(Constants.SPARKBL, MotorType.kBrushless);
     sparkBR = new CANSparkMax(Constants.SPARKBR, MotorType.kBrushless);
-    reverse = false;
     /* encoders have to be constructed seperately in order to afford the stuttering problem that
     occured in the Pre-Season of 2020. See documentation in the log for more 
     details regarding the encoder problem. */
+
 
     encoderFL = sparkFL.getEncoder();
     encoderFR = sparkFR.getEncoder();
     encoderBL = sparkBL.getEncoder();
     encoderBR = sparkBR.getEncoder();
 
+    go = true;
     leftdrive = new SpeedControllerGroup(sparkFL, sparkBL);
     rightdrive = new SpeedControllerGroup(sparkFR, sparkBR);
     daryl = new DifferentialDrive(leftdrive, rightdrive);
@@ -60,14 +61,10 @@ public class DriveTrain extends SubsystemBase {
 
   public void regDrive(double speedL, double speedR)
   {
-    // value was tested by james.
-    double change = 1.3;
-    // robot was going "BRRRRRRRRR" and was being mean to James. thus had to change the robot's behavior. 
-  
-    daryl.tankDrive(speedL/change, speedR/change);
+      daryl.tankDrive(speedL, speedR);
 
   }
-// bunch of getters and setters from the encoders in case we ever need to use these for testing
+
   public double getWheelPosFL()
   {
     return encoderFL.getPosition();
@@ -87,7 +84,7 @@ public class DriveTrain extends SubsystemBase {
   {
     return encoderBR.getPosition();
   }
-// theorically, the velocity for all wheels should be the same thus we only need one getVelocity
+
   public double getWheelVelocity()
   {
     return encoderFL.getVelocity();
@@ -96,7 +93,7 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() 
   {
-  //  setDefaultCommand(new Drive(getXboxXSpeed(), getXboxYSpeed()));
+   // setDefaultCommand(new Drive(getXboxXSpeed(), getXboxYSpeed()));
   }
 
 

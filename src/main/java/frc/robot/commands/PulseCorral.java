@@ -18,7 +18,7 @@ public class PulseCorral extends CommandBase {
   boolean lazerTrip, lazerTripTwo;
   public PulseCorral() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.gibShoot);
+    addRequirements(RobotContainer.gibShoot, RobotContainer.m_ds, RobotContainer.m_ds2);
   }
 
   // Called when the command is initially scheduled.
@@ -30,8 +30,8 @@ public class PulseCorral extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean scanned = false;
-    boolean scannedTwo = false;
+    boolean scanned = RobotContainer.m_ds.spotted(1);
+    boolean scannedTwo = RobotContainer.m_ds2.spotted(1);
     //Counts when a ball has been seen by the scanner and then stops beeing seen
     if(lazerTrip && !scanned)
     {
@@ -52,7 +52,7 @@ public class PulseCorral extends CommandBase {
       RobotContainer.gibShoot.ballAmount--;
     }
     lazerTripTwo = scannedTwo;
-    
+    // hiiiiiiiiiii simeon look at meeeeeeeeeeeee i am a computer and my pupils are dilateddddddddddddddddddddddddddd ;)
   }
 
   // Called once the command ends or is interrupted.

@@ -24,9 +24,10 @@ public class ScanClosestColor extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // finds the color that closest to what scanned and tells us what it is on smart dashboard
+    //Gets the closest color and displays it to dashboard
     final Color detected = Robot.m_robotContainer.m_cs.getClosest();
     SmartDashboard.putString("Closest Color RGB", detected.red + " " + detected.green + " " + detected.blue);
+    //Displays what rgb to color sensor is seeing
     Robot.m_robotContainer.m_cs.displayRGB();
   }
 

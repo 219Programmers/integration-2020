@@ -10,36 +10,34 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class Stabilize extends CommandBase {
+public class PWMOpenClose extends CommandBase {
+
+  boolean open;
   /**
-   * Creates a new Stabilize.
+   * Creates a new PWMOpenClose.
    */
-  public Stabilize() {
+  public PWMOpenClose(boolean open) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_navx);
+    addRequirements(RobotContainer.m_pwm);
+    this.open = open;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    if(open)
+    {
+      RobotContainer.m_pwm.open();
+    }
+    else
+    {
+      RobotContainer.m_pwm.close();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double rickRoll = RobotContainer.m_navx.ahrs.getRoll();
-    double moveAmount = 0;
-    if(rickRoll<0)
-    {
-      //MoveRight
-      moveAmount+=0.01*RobotContainer.m_navx.ahrs.getRoll();
-    }
-    else
-    {
-      //MoveLeft
-      moveAmount+=0.01*RobotContainer.m_navx.ahrs.getRoll();
-    }
   }
 
   // Called once the command ends or is interrupted.
@@ -50,6 +48,6 @@ public class Stabilize extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

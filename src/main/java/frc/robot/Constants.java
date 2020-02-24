@@ -6,9 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.I2C.*;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -19,18 +18,23 @@ import edu.wpi.first.wpilibj.I2C.*;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-    // current values are the real thing
-    public static int SPARKFL = 11; //Actually 6
-    public static int SPARKFR = 8;
-    public static int SPARKBL = 5;
-    public static int SPARKBR = 4;
+	
+    // current values are standins for the real thing. -1/9/20
+    // public static int SPARKFL = 6;
+    // public static int SPARKFR = 8;
+    // public static int SPARKBL = 5;
+    // public static int SPARKBR = 4;
+    public static int SPARKFL = 15;
+    public static int SPARKFR = 22;
+    public static int SPARKBL = 54;
+    public static int SPARKBR = 45;
    // public static int SPINPORT = 0;
     public static int mfr = 9;
     public static int mfl = 3;
     public static int mbr = 8;
     public static int mbl = 4;
 
+	public static final double PROPSPEED = 1.3d;
     public static final int X_BUTTON_ID = 3;
 	public static final int A_BUTTON_ID = 1;
 	public static final int LEFT_TRIGGER_ID = 5;
@@ -48,14 +52,14 @@ public final class Constants {
 	public static final int LEFTSHIFTOPEN = 0; //port
 	public static final int RIGHTSHIFTCLOSE = 3; //port
 	public static final int RIGHTSHIFTOPEN = 2; //port
-	public static final int PCMCAN = 1;
+	public static final int PCMCAN = 0;
 	public static final double SOLSLIDETIME = 0.03;
     public static final double RIGHTSOLSLIDETIME = .05;
-	public static final Port COLOR_SENSOR_PORT = Port.kOnboard;
+    public static final Port COLOR_SENSOR_PORT = Port.kOnboard;
 	public static final Port AHRSPort = Port.kMXP;
 	public static final I2C AHRSI2CPort = new I2C(Port.kMXP, 50); 
 	public static final double CLIMBSPEED = 0;
-	public static final int CLIMB = 0;
+	public static final int CCAN = 6;
 	public static final int BELT = 0;
 	public static final int IND = 0;
 	public static final double BELTSPEED = .3;
@@ -63,8 +67,4 @@ public final class Constants {
 	public static final int HARVESTERTALONA = 0;
 	public static final int HARVESTERTALONB = 0;
 	public static final int HARVESTERTALONC = 0;
-	public static final double PROPSPEED = 1.3;
-
-	public static final int SHOOTER = 1;
-	public static final int SHOOTER2 = 6;
 }

@@ -22,7 +22,6 @@ public class StopCompress extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // stops the compressor from going. very simple command, turns it off. james doesn't think it works.  
     Robot.m_robotContainer.comp.stop();
   }
 

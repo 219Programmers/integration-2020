@@ -33,7 +33,7 @@ public class FeedShooter extends CommandBase {
   @Override
   public void execute() {
 
-    //if laser triggered, numbPCells--;
+    //if lazer triggered, numbPCells--;
     if(direction)
       RobotContainer.gibShoot.runIndCor();
     else
@@ -43,7 +43,7 @@ public class FeedShooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.gibShoot.stopCor();
+    RobotContainer.gibShoot.stopIndCor();
   }
 
   // Returns true when the command should end.

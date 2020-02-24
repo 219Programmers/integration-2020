@@ -30,7 +30,6 @@ public class ColorWheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Gets the currently scanned color
     lastColor = Robot.m_robotContainer.m_cs.getClosest();
     colorChanges = 0;
   }
@@ -38,7 +37,6 @@ public class ColorWheel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //Counts the amount of colors
     SmartDashboard.putNumber("Color Count", colorChanges);
     final Color result = Robot.m_robotContainer.m_cs.getClosest();
     if (lastColor != result) {
@@ -57,7 +55,6 @@ public class ColorWheel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //Stops when color changes
     return colorChanges>=24;
   }
 }

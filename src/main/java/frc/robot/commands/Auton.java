@@ -32,7 +32,6 @@ public class Auton extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if time is less than 4 seconds
     if(time.get() < 4)
     { 
        RobotContainer.m_driveTrain.regDrive(0.25, 0.25);

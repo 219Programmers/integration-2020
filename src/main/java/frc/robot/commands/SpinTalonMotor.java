@@ -8,43 +8,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.TalonMotor;
 
-public class Stabilize extends CommandBase {
+public class SpinTalonMotor extends CommandBase {
+
+  TalonMotor a;
+  double s;
   /**
-   * Creates a new Stabilize.
+   * Creates a new SpinTalonMotor.
    */
-  public Stabilize() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_navx);
+  public SpinTalonMotor(TalonMotor m, double speed) {
+    a = m;
+    s = speed;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    a.move(s);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double rickRoll = RobotContainer.m_navx.ahrs.getRoll();
-    double moveAmount = 0;
-    if(rickRoll<0)
-    {
-      //MoveRight
-      moveAmount+=0.01*RobotContainer.m_navx.ahrs.getRoll();
-    }
-    else
-    {
-      //MoveLeft
-      moveAmount+=0.01*RobotContainer.m_navx.ahrs.getRoll();
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    a.stop();
   }
 
   // Returns true when the command should end.

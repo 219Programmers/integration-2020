@@ -30,47 +30,43 @@ public class TurnToYawZero extends CommandBase {
   @Override
   public void initialize() {
     // Robot.m_robotContainer.m_driveTrain.go = false;
-    //This can be set to anything
     speed = 1;
-    justPositive = Robot.m_robotContainer.m_navx.ahrs.getYaw()>0;
+    // justPositive = Robot.m_robotContainer.m_navx.ahrs.getYaw()>0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //Turns to yaw zero
-    // double lSpeed = 0;
-    // double rSpeed = 0;
-    // lSpeed-=0.05*RobotContainer.m_navx.ahrs.getYaw();
-    // rSpeed+=0.05*RobotContainer.m_navx.ahrs.getYaw();
-    // speed = Math.abs(lSpeed) + Math.abs(rSpeed);
-    // RobotContainer.m_mot.moveForward(lSpeed, rSpeed);
-    //Turns to yaw zero and makes sure the robot slows down enough to not drift
-    if(justPositive != Robot.m_robotContainer.m_navx.ahrs.getYaw()>0)
-    {
-      justPositive = !justPositive;
-      speed/=1.5;
-    }
-    if(Robot.m_robotContainer.m_navx.ahrs.getYaw()>0)
-    {
-      RobotContainer.m_mot.left.set(ControlMode.PercentOutput, -speed);
-      RobotContainer.m_mot.leftTwo.set(ControlMode.PercentOutput, -speed);
-      RobotContainer.m_mot.right.set(ControlMode.PercentOutput, -speed);
-      RobotContainer.m_mot.rightTwo.set(ControlMode.PercentOutput, -speed);
-    }
-    else
-    {
-      RobotContainer.m_mot.left.set(ControlMode.PercentOutput, speed);
-      RobotContainer.m_mot.leftTwo.set(ControlMode.PercentOutput, speed);
-      RobotContainer.m_mot.right.set(ControlMode.PercentOutput, speed);
-      RobotContainer.m_mot.rightTwo.set(ControlMode.PercentOutput, speed);
-    }
+    double lSpeed = 0;
+    double rSpeed = 0;
+    lSpeed-=0.05*RobotContainer.m_navx.ahrs.getYaw();
+    rSpeed+=0.05*RobotContainer.m_navx.ahrs.getYaw();
+    speed = Math.abs(lSpeed) + Math.abs(rSpeed);
+    RobotContainer.m_mot.moveForward(lSpeed, rSpeed);
+    // if(justPositive != Robot.m_robotContainer.m_navx.ahrs.getYaw()>0)
+    // {
+    //   justPositive = !justPositive;
+    //   speed/=1.5;
+    // }
+    // if(Robot.m_robotContainer.m_navx.ahrs.getYaw()>0)
+    // {
+    //   RobotContainer.m_mot.left.set(ControlMode.PercentOutput, -speed);
+    //   RobotContainer.m_mot.leftTwo.set(ControlMode.PercentOutput, -speed);
+    //   RobotContainer.m_mot.right.set(ControlMode.PercentOutput, -speed);
+    //   RobotContainer.m_mot.rightTwo.set(ControlMode.PercentOutput, -speed);
+    // }
+    // else
+    // {
+    //   RobotContainer.m_mot.left.set(ControlMode.PercentOutput, speed);
+    //   RobotContainer.m_mot.leftTwo.set(ControlMode.PercentOutput, speed);
+    //   RobotContainer.m_mot.right.set(ControlMode.PercentOutput, speed);
+    //   RobotContainer.m_mot.rightTwo.set(ControlMode.PercentOutput, speed);
+    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //Stops
     Robot.m_robotContainer.m_mot.stop();
     // Robot.m_robotContainer.m_driveTrain.go = true;
   }

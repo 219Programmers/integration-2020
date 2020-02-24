@@ -8,41 +8,51 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class LimeVisionSubsystem extends SubsystemBase 
-{
+public class LimeVisionSubsystem extends SubsystemBase {
   	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+	
+	//Create network table
+	private NetworkTable limeTable;
 	
 	//Create variables
 	public double targetD;
 	public boolean hasTarget;
+	public double xOffset;
 	public double yOffset;
 	public double area;
 	public double skew;
 	public double LEDMode;
 	public double camMode;
 	public double pipeline;
-	public static double MOUNTANG = 0;
-    public static double LOOKANG = 0;
-    public static double ROBOHGT = 0;
-    public static double TARGETHGT = 0;
 
-	public static NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
-	public static NetworkTable table = tableInstance.getTable("limelight");
+
+	public static final Vector2d resolution = new Vector2d(120,120);
+	
+	public NetworkTable getLimetable() 
+	{
+		return NetworkTableInstance.getDefault().getTable("limelight");
+	}
+
+	public void setLimetable(NetworkTable table) {
+
+		this.limeTable = table;
+	}
 
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here. setDefaultCommand
-		//	(new LimeVisionCommand());
-		}
+		// Set the default command for a subsystem here.
+//		setDefaultCommand(new LimeVisionCommand());
+	}
 	
 	//Does the camera proccessor have a target?
 	public boolean getHasTarget()
 	 {
-		targetD = table.getEntry("tv").getDouble(0); 
+		targetD = getLimetable().getEntry("tv").getDouble(0); 
 		if(targetD == 0) 
 		{
 			hasTarget = false;
@@ -53,48 +63,76 @@ public class LimeVisionSubsystem extends SubsystemBase
 		}
 		return hasTarget;
 	}
+	
+	// Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees)
+	public double getXOffset() 
+	{
+		xOffset = getLimetable().getEntry("tx").getDouble(0);
+		return xOffset;
+	}
+	
+	//Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
+	public double getYOffset() 
+	{
+		yOffset = getLimetable().getEntry("ty").getDouble(0);
+		return yOffset;
+	}
+	
+	//Target Area (0% of image to 100% of image)
+	public double getArea() 
+	{
+		area = getLimetable().getEntry("ta").getDouble(0);
+		return area;
+	}
+	
+	//Skew or rotation (-90 degrees to 0 degrees)
+	public double getSkew() {
+		skew = getLimetable().getEntry("ts").getDouble(0);
+		return skew;
+	}
 
 	//Limelight LED state
 	public double getLEDMode() 
 	{
-		LEDMode = table.getEntry("ledMode").getDouble(1);
+		LEDMode = getLimetable().getEntry("ledMode").getDouble(1);
 		return LEDMode;
-	}
-
-	public void setLEDMode(double x)
-	{
-		table.getEntry("ledMode").setDouble(x);
 	}
 	
 	//Limelight Camera state
 	public double getCamMode()
 	{
-		camMode = table.getEntry("camMode").getDouble(0);
+		camMode = getLimetable().getEntry("camMode").getDouble(0);
 		return camMode;
 	}
 	
+	//get current pipeline that is being used
+	public double getPipeline() 
+	{
+		pipeline = getLimetable().getEntry("pipeline").getDouble(0);
+		return pipeline;
+	}
 	
 	//Set the LED mode of the limelight
 	public void switchLED()
 	 {
 		if(getLEDMode() == 0)
 		{
-			table.getEntry("ledMode").setDouble(1);
+			getLimetable().getEntry("ledMode").setDouble(1);
 			SmartDashboard.putString("LED Mode", "Off");
 		}
 		else if(getLEDMode() == 1) 
 		{
-			table.getEntry("ledMode").setDouble(3);
+			getLimetable().getEntry("ledMode").setDouble(3);
 			SmartDashboard.putString("LED Mode", "On");
 		}
 		else if(getLEDMode() == 2) 
 		{
-			table.getEntry("ledMode").setDouble(1);
+			getLimetable().getEntry("ledMode").setDouble(1);
 			SmartDashboard.putString("LED Mode", "Off");
 		}
 		else if(getLEDMode() == 3) 
 		{
-			table.getEntry("ledMode").setDouble(1);
+			getLimetable().getEntry("ledMode").setDouble(1);
 			SmartDashboard.putString("LED Mode", "Off");
 		}
 	}
@@ -104,43 +142,22 @@ public class LimeVisionSubsystem extends SubsystemBase
 	{
 		if(getCamMode() == 0) 
 		{
-			table.getEntry("camMode").setDouble(1);
+			getLimetable().getEntry("camMode").setDouble(1);
 			SmartDashboard.putString("Camera Mode", "Camera");
 		}
 		else if(getCamMode() == 1) 
 		{
-			table.getEntry("camMode").setDouble(0);
+			getLimetable().getEntry("camMode").setDouble(0);
 			SmartDashboard.putString("Camera Mode", "Vision");
 		}
 	}
 	
-
-	// PIPELINE
-	private static NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
-
-	/**
-	 * @param pipeline Specified pipeline to set the limelight to
-	 */
-	public void setPipeline(final int pipeline) {
-        // Prevent input of invalid pipelines
-        if (pipeline >= 0 && pipeline <= 9) {
-            pipelineEntry.setNumber(pipeline);
-        }
-    }
-
-    private static NetworkTableEntry getPipelineEntry = table.getEntry("getpipe");
-
-	//finds the active pipeline with the networktable
-	public double getPipeline() 
-	{
-        return getPipelineEntry.getDouble(0);
-	}
 	
-	//uses the formula d = (h2-h1) / tan(a1+a2) from the limelight website to calculate the distance
-	public double getDistance()
+	//Set the pipeline
+	public void setPipeline(double pipeline) 
 	{
-		
-		return (TARGETHGT - ROBOHGT) / Math.tan(table.getEntry("ty").getDouble(0.0) + MOUNTANG);
+		getLimetable().getEntry("pipeline").setDouble(pipeline);
+		SmartDashboard.putNumber("Camera Mode", pipeline);
 	}
 	
 }

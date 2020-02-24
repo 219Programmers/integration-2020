@@ -22,7 +22,6 @@ public class SetYawZero extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // sets the angle to zero on the navX
     Robot.m_robotContainer.m_navx.ahrs.zeroYaw();
     
   }

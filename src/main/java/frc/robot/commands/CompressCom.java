@@ -20,7 +20,6 @@ public class CompressCom extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    //Starts compressor
     Robot.m_robotContainer.comp.start();
   }
 

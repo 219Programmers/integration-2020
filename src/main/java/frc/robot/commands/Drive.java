@@ -7,17 +7,19 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+
 
 public class Drive extends CommandBase {
   /**
    * Creates a new Drive.
    */
-  public double xs, ys;
+  public double leftSpeed, rightSpeed;
   
-  public Drive()
-  {
+  
+  public Drive() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_driveTrain);
   }
@@ -26,32 +28,27 @@ public class Drive extends CommandBase {
   @Override
   public void initialize() 
   {
-    
   }
+
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
+  public void execute() 
   {
-    // gets the xbox joysticks and sets the read axis position to how fast the drive should GO
-    xs = RobotContainer.getLeftSpeed();
-    ys = RobotContainer.getRightSpeed();
-    // james wrote this code to see if they wanted to reverse the robot 
-    if(!RobotContainer.m_driveTrain.reverse)
+    if(RobotContainer.m_driveTrain.go)
     {
-      RobotContainer.m_driveTrain.regDrive(xs, ys);
+	  	leftSpeed = RobotContainer.getLeftSpeed() * 0.2;
+		  rightSpeed = RobotContainer.getRightSpeed() * 0.24; //adjusts for the right side being slower
+      RobotContainer.m_driveTrain.regDrive(-leftSpeed, rightSpeed); // motors on the left are flipped
     }
-    else
-    {
-      RobotContainer.m_driveTrain.regDrive(-ys, -xs); //Reverse
-    }
+    SmartDashboard.putNumber("left speed", RobotContainer.getLeftSpeed());
+    SmartDashboard.putNumber("right speed",RobotContainer.getRightSpeed());
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // drive will stop if something bad happens or another command needs the subsystem.
-    RobotContainer.m_driveTrain.regDrive(0, 0);
   }
 
   // Returns true when the command should end.

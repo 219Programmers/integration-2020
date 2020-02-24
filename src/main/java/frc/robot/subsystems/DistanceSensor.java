@@ -7,40 +7,40 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
-public class Climb extends SubsystemBase {
-  public CANSparkMax spark1;
-  public CANEncoder encoderSpark1;
+public class DistanceSensor extends SubsystemBase {
+
+  Rev2mDistanceSensor a = new Rev2mDistanceSensor(Port.kOnboard);
   /**
-   * Creates a new Climb.
+   * Creates a new DistanceSensor.
    */
-  public Climb() {
-    spark1 = new CANSparkMax(Constants.CCAN, MotorType.kBrushless);
-    encoderSpark1 = spark1.getEncoder();
-    spark1.setIdleMode(IdleMode.kBrake);
+  public DistanceSensor() {
+    a.setAutomaticMode(true);
   }
-  //Makes motor spin one way
-  public void climbUp(double speed)
-  {
-    spark1.set(speed);
+
+  public DistanceSensor(int what) {
+    if(what==1)
+    {
+      a = new Rev2mDistanceSensor(Port.kMXP);
+    }
+    a.setAutomaticMode(true);
   }
-  //Makes motor spin down
-  public void climbDown(double speed)
+
+  public boolean spotted(double x)
   {
-    spark1.set(-speed);
+    
+    return a.getRange()<=x;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("putPosition",encoderSpark1.getPosition());
+    SmartDashboard.putNumber("5 Inches", a.getRange());
   }
 }

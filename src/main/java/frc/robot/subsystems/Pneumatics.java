@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 
 public class Pneumatics extends SubsystemBase {
   private Solenoid  valveOpenSide, valveCloseSide;
@@ -38,13 +37,9 @@ public class Pneumatics extends SubsystemBase {
   //portOpen is the open port, portClose is the close port, slideTime is the time it takes to slide
   public Pneumatics(int portOpen, int portClose, double slideTime)
   {
-        if (Robot.isReal()) 
-	{
           valveOpenSide = new Solenoid(Constants.PCMCAN, portOpen);
           valveCloseSide = new Solenoid(Constants.PCMCAN, portClose);
-
           solenoidSlideTime = slideTime;
-        }
   }
 
   /**
@@ -62,7 +57,6 @@ public class Pneumatics extends SubsystemBase {
   public void Open()
   {
           valveCloseSide.set(false);
-
           valveOpenSide.set(true);
           Timer.delay(solenoidSlideTime);
           valveOpenSide.set(false);

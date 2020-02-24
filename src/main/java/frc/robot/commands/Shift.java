@@ -27,7 +27,6 @@ public class Shift extends CommandBase {
   @Override
   public void initialize()
   {
-    // sets it to close or open depending on what it was before, switches it to open or close. 
     if(shiftUp)
     {
       Robot.m_robotContainer.lPneumShift.SetA();

@@ -31,7 +31,6 @@ public class UsePneum extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    //Sets A
     Robot.m_robotContainer.pneum.SetA();
   }
 
