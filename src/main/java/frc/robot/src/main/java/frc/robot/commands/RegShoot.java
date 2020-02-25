@@ -7,54 +7,42 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.ColorSensor;
-import frc.robot.subsystems.Motor;
+import frc.robot.RobotContainer;
 
-public class ColorWheel extends CommandBase {
-
-  public Color lastColor;
-  public int colorChanges;
-
+public class RegShoot extends CommandBase {
   /**
-   * Creates a new ColorWheel.
+   * Creates a new RegShoot.
    */
-  public ColorWheel() {
+  private double speedy;
+  public RegShoot(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.m_robotContainer.m_mot, Robot.m_robotContainer.m_cs);
+    addRequirements(RobotContainer.sPID);
+    speedy = speed;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    lastColor = Robot.m_robotContainer.m_cs.getClosest();
-    colorChanges = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Color Count", colorChanges);
-    final Color result = Robot.m_robotContainer.m_cs.getClosest();
-    if (lastColor != result) {
-      lastColor = result;
-      colorChanges++;
-    }
-    Motor.moveForward(colorChanges<20?0.5:0.25);
+    // gets rid of the PID and just goes with the motors, will not fix itself if interrupted by anything
+    RobotContainer.sPID.stopPID(speedy);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(final boolean interrupted) {
-    Motor.stop();
+  public void end(boolean interrupted) {
+    // motors will stop if the command is interrupted by another command using the subsystem. 
+    RobotContainer.sPID.stopMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return colorChanges>=24;
+    return false;
   }
 }

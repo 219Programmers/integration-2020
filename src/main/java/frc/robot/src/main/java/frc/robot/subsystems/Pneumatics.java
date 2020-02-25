@@ -15,7 +15,7 @@ import frc.robot.Constants;
 public class Pneumatics extends SubsystemBase {
   private Solenoid  valveOpenSide, valveCloseSide;
 
-  public double           solenoidSlideTime;
+  public double solenoidSlideTime;
 
   /**
    * @param port PCM port wired to open/A side of valve. Close/B side is wired to PCM next port.
@@ -39,7 +39,6 @@ public class Pneumatics extends SubsystemBase {
   {
           valveOpenSide = new Solenoid(Constants.PCMCAN, portOpen);
           valveCloseSide = new Solenoid(Constants.PCMCAN, portClose);
-
           solenoidSlideTime = slideTime;
   }
 
@@ -58,7 +57,6 @@ public class Pneumatics extends SubsystemBase {
   public void Open()
   {
           valveCloseSide.set(false);
-
           valveOpenSide.set(true);
           Timer.delay(solenoidSlideTime);
           valveOpenSide.set(false);

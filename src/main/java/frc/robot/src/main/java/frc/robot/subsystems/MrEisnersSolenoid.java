@@ -6,24 +6,34 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class TestMotot extends SubsystemBase {
+public class MrEisnersSolenoid extends SubsystemBase {
+
+  public static TalonSRX solenoid;
+  public boolean closed = true;
   /**
-   * Creates a new TestMotot.
+   * Creates a new MrEisnersSolenoid.
    */
-  private WPI_TalonSRX spinMotor;
-  public TestMotot() 
-  {
-      //spinMotor = new WPI_TalonSRX(Constants.SPINPORT);
+  public MrEisnersSolenoid() {
+    solenoid = new TalonSRX(7);
   }
-  public void runMotor(double x)
+
+  public void open()
   {
-    spinMotor.set(x);
+    solenoid.set(ControlMode.PercentOutput, 1);
   }
+
+  public void close()
+  {
+    solenoid.set(ControlMode.PercentOutput, -1);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

@@ -6,24 +6,32 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
-public class TestMotot extends SubsystemBase {
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class LinearA extends SubsystemBase {
+
+  PWM a;
   /**
-   * Creates a new TestMotot.
+   * Creates a new LinearA.
    */
-  private WPI_TalonSRX spinMotor;
-  public TestMotot() 
-  {
-      //spinMotor = new WPI_TalonSRX(Constants.SPINPORT);
+  public LinearA() {
+    a = new PWM(0);
+    a.setSpeed(1);
   }
-  public void runMotor(double x)
+
+  public void open()
   {
-    spinMotor.set(x);
+    a.setPosition(1);
+
   }
+
+  public void close()
+  {
+    a.setPosition(0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

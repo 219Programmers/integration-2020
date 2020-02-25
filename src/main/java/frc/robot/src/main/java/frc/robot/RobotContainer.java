@@ -7,57 +7,59 @@
 
 package frc.robot;
 
-// imported needed libraries to use to get buttons, joysticks, and put this on smartdashbaord
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.Button;
-import edu.wpi.first.wpilibj.smartdashboard.*;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutonLime;
 import frc.robot.commands.CamMode;
-import frc.robot.commands.Drive;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.SwitchLED;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.LimeVisionSubsystem;
-import frc.robot.Robot;
-import edu.wpi.first.wpilibj.Solenoid;
-
-// importing our code so we can program the buttons to do certain commands
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.TestMotot;
-import frc.robot.commands.*;
-
-// simeon and james code 1/23
-import frc.robot.commands.BooleanTest;
-import frc.robot.commands.CalibrateColor;
+import frc.robot.commands.ClimbNow;
+import frc.robot.commands.ClimbYes;
 import frc.robot.commands.CloseValve;
-import frc.robot.commands.ColorScanMove;
-import frc.robot.commands.ColorWheel;
-import frc.robot.commands.CompressCom;
-import frc.robot.commands.FindColor;
+import frc.robot.commands.DoAuton;
+import frc.robot.commands.Drive;
+import frc.robot.commands.DriveStraight;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.FieldMapping;
+import frc.robot.commands.HarvesterUpDown;
+import frc.robot.commands.LimeFindTarget;
+import frc.robot.commands.MrEisnerOpenClose;
+import frc.robot.commands.PIDShooterCommand;
+import frc.robot.commands.PWMOpenClose;
+import frc.robot.commands.Reverse;
 import frc.robot.commands.ScanClosestColor;
+import frc.robot.commands.SetYawZero;
 import frc.robot.commands.Shift;
 import frc.robot.commands.SinglePneum;
 import frc.robot.commands.SinglePneumClose;
-import frc.robot.commands.StopCompress;
-import frc.robot.commands.TurnAndStop;
+import frc.robot.commands.Spin;
+import frc.robot.commands.SpinTalonMotor;
+import frc.robot.commands.SwitchLED;
+import frc.robot.commands.TurnToYawZero;
 import frc.robot.commands.UsePneum;
-//import frc.robot.subsystems.ColorSensor;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Compression;
+import frc.robot.subsystems.DistanceSensor;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Harvester;
+import frc.robot.subsystems.IndexCorral;
+import frc.robot.subsystems.LimeVisionSubsystem;
+import frc.robot.subsystems.LinearA;
 import frc.robot.subsystems.Motor;
+import frc.robot.subsystems.MrEisnersSolenoid;
+import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.ShooterPID;
 import frc.robot.subsystems.SinglePneumatics;
-
-
-
+import frc.robot.subsystems.TalonMotor;
+import frc.robot.subsystems.TestMotot;
+import frc.robot.Robot;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -65,24 +67,48 @@ import frc.robot.subsystems.SinglePneumatics;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  public static final TestMotot m_spin = new TestMotot();
+  //public static Motor m_mot = null;
+// The robot's subsystems and commands are defined here...
+
+  public static Joystick mainDriver;
+
+  public Button three;
+  public Button four;
+ 
+  public Button x;
+
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  public static DriveTrain m_driveTrain;
-  public static TestMotot m_spin;
+ 
+  public static DistanceSensor m_ds;
+  public static DistanceSensor m_ds2;
+  public static MrEisnersSolenoid m_esol;
+
+  public static LinearA m_pwm;
+  public static TalonMotor m_tMotor;
+ 
+  public static boolean go;
+
+
   
+  public static DriveTrain m_driveTrain;
+  public static AutonLime auto;
   public static Joystick xbox;
+  public static Joystick joy;
  // public Button a;
+
   public Button b;
   public JoystickButton lmove;
   public JoystickButton rmove;
-  public JoystickButton mistake;
-  public Drive driving;
+
   // setDefaultCommand(new Drive());
 
   public static LimeVisionSubsystem limeSub;
   public static SwitchLED switchLight;
+
 
   //james and simeon code
   public JoystickButton ex;
@@ -90,31 +116,69 @@ public class RobotContainer {
   public JoystickButton a;
   public JoystickButton leftT;
   public JoystickButton rightT;
+  public JoystickButton trigger;
+  public JoystickButton two;
+  public JoystickButton six;
+  public JoystickButton seven;
+  public JoystickButton nine;
   public static ColorSensor m_cs;
-  // public static Motor m_mot; //Commented out, might conflict with normal drive
+  public static Motor m_mot; //Commented out, might conflict with normal drive
   public static Pneumatics pneum; // new Pneumatics(Constants.PNEUM, Constants.PNEUMCLOSE, Constants.SOLSLIDETIME);
   public static Pneumatics lPneumShift;
   public static Pneumatics rPneumShift;
+  public static Pneumatics m_harvestpneum;
   public static SinglePneumatics pneumSingle; //new SinglePneumatics();
   public static Compression comp;
+  public static ShooterPID sPID;
+
+
+
+  public static Climb mongClimb;
+  public static IndexCorral gibShoot;
+  public static Harvester m_harvester;
+  public static NavX m_navx;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() 
-  {
-    m_driveTrain = new DriveTrain();
-    m_spin = new TestMotot();
-    comp = new Compression();
+  public RobotContainer()
+   {
+    // Configure the button bindings
     limeSub = new LimeVisionSubsystem();
-    m_cs = new ColorSensor();
-    // m_mot = new Motor();
+    m_driveTrain = new DriveTrain();
+    sPID = new ShooterPID();
+     switchLight = new SwitchLED();
+     mongClimb = new Climb();
+     m_cs = new ColorSensor();
+    auto = new AutonLime();
+    go = false;
+     m_ds = new DistanceSensor();
+     m_ds2 = new DistanceSensor(1);
+     m_pwm = new LinearA();
+     m_tMotor = new TalonMotor(2);
     
-    lPneumShift = new Pneumatics(Constants.LEFTSHIFTOPEN, Constants.LEFTSHIFTCLOSE, Constants.SOLSLIDETIME);
-    rPneumShift = new Pneumatics(Constants.RIGHTSHIFTOPEN, Constants.RIGHTSHIFTCLOSE, Constants.RIGHTSOLSLIDETIME);
-    pneumSingle = null;
+     m_mot = new Motor();
+    // mongClimb.encoderSpark1.setPosition(0);
+     pneumSingle = new SinglePneumatics(4);
+     m_esol = new MrEisnersSolenoid();
+    //pneum = new Pneumatics(0, 1, Constants.SOLSLIDETIME);
+  
+     m_harvester = new Harvester();
+     m_harvestpneum = new Pneumatics(0, 1, 0.03);
+     comp = new Compression();
+   
+     gibShoot = new IndexCorral();
+    m_navx = new NavX();
+    //  m_mot = new Motor();
+    
+    //  lPneumShift = new Pneumatics(Constants.LEFTSHIFTOPEN, Constants.LEFTSHIFTCLOSE, Constants.SOLSLIDETIME);
+    //  rPneumShift = new Pneumatics(Constants.RIGHTSHIFTOPEN, Constants.RIGHTSHIFTCLOSE, Constants.RIGHTSOLSLIDETIME);
+    // pneumSingle = null;
+    lPneumShift = new Pneumatics(6, 7, Constants.SOLSLIDETIME);
+    rPneumShift = new Pneumatics(3, 5, Constants.RIGHTSOLSLIDETIME);
     switchLight = new SwitchLED();
-    pneum = null;
+    // pneum = null;
+
     // driving = new Drive(getXboxXSpeed(), getXboxYSpeed());
 
     // s and j
@@ -122,6 +186,16 @@ public class RobotContainer {
     SmartDashboard.putString("Turn Color", "");
     SmartDashboard.putNumber("Change", 1);
 
+    SmartDashboard.putNumber("turn", 15);
+ 	  SmartDashboard.putNumber("mongSpeed", .3);
+    SmartDashboard.putNumber("Speed", .5);
+    SmartDashboard.putNumber("SpeedF", .2);
+    xbox = new Joystick(0);
+    joy = new Joystick(1);
+ 
+    SmartDashboard.putNumber("turn", 15);
+    SmartDashboard.putNumber("mongSpeed", .3);
+    SmartDashboard.putNumber("Speed", .5);
     configureButtonBindings();
   }
 
@@ -131,78 +205,92 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
-
-    // a.whenPressed(new Spin());
+  private void configureButtonBindings() 
+  {
+   
     xbox = new Joystick(0);
-    rmove = new JoystickButton(xbox, 1);
-    lmove = new JoystickButton(xbox, 5);
-    mistake = new JoystickButton(xbox, 2);
-    ex = new JoystickButton(xbox, Constants.X_BUTTON_ID);
-    y = new JoystickButton(xbox, Constants.Y_BUTTON_ID);
-    a = new JoystickButton(xbox, Constants.A_BUTTON_ID);
-    leftT = new JoystickButton(xbox, Constants.LEFT_TRIGGER_ID);
-    rightT = new JoystickButton(xbox, Constants.RIGHT_TRIGGER_ID);
-    JoystickButton three = new JoystickButton(xbox, 1);
-    JoystickButton two = new JoystickButton(xbox, 2);
-    lmove = new JoystickButton(xbox, 1);
-    rmove = new JoystickButton(xbox, 5);
-    JoystickButton four = new JoystickButton(xbox, 4);
+    joy = new Joystick(1);
+    // maindriver buttons
+    ex = new JoystickButton(xbox, 3);
+    y = new JoystickButton(xbox, 4);
+    a = new JoystickButton(xbox, 1);
+    b = new JoystickButton(xbox, 2);
+    leftT = new JoystickButton(xbox, 5);
+    rightT = new JoystickButton(xbox, 6);
+    // co-driver buttons
+    trigger = new JoystickButton(joy, 1);
+    two = new JoystickButton(joy, 2);
+    six = new JoystickButton(joy, 6);
+    seven = new JoystickButton(joy, 7);
+    nine = new JoystickButton(joy, 9);
+    // main driver controls
+    leftT.toggleWhenPressed(new Shift(false));
+    rightT.toggleWhenPressed(new Shift(true));
+    b.toggleWhenPressed(new Reverse());
+    y.toggleWhenPressed(new HarvesterUpDown());
+    ex.whileHeld(new RevCor(false));
+    a.whileHeld(new RevCor(true));
+    // co-driver controls
+    trigger.whileHeld(new PIDShooterCommand(.9));
+    two.toggleWhenPressed(new LimeFindTarget());
+    //six.toggleWhenPressed(new ClimbYes());
+  //  seven.whileHeld(new ClimbNow(true, 0.5));
+    //nine.whileHeld(new ClimbNow(false, 0.5));
+   // gibShoot.setDefaultCommand(new PulseCorral());
+    m_harvester.setDefaultCommand(new Harvest(false));
 
-    three.toggleWhenPressed(new SwitchLED());
-    two.toggleWhenPressed(new CamMode());
-    
-    m_driveTrain.setDefaultCommand(new Drive());
 
 
-    // s and j
-    leftT.toggleWhenPressed(new Shift(true));
-    rightT.toggleWhenPressed(new Shift(false));
+    //m_driveTrain.setDefaultCommand(new Drive());
+ 
+ 
+  //  m_driveTrain.setDefaultCommand(new FieldMapping());
+  }
+	/**
+	 * Getter for the x-axis of the left joystick
+	 * @return The x-axis on the left joystick which is used for the speed of the right motors on tank drive
+	 */
+  public static double getLeftSpeed() 
+  {
+    // if (Math.abs(mainDriver.getRawAxis(1)) >= .2) 
+    // {
+    //   return (mainDriver.getRawAxis(1));
+		// }
+		return 0.0;
+	}
+	/**
+	 * Getter for the x-axis of the right joystick
+	 * @return The x-axis on the right joystick which is used for the speed of the right motors on tank drive
+	 */
+	public static double getRightSpeed() 
+	{
+		// if(Math.abs(mainDriver.getRawAxis(5)) >= .2)
+		// {
+		// 	return (mainDriver.getRawAxis(5));
+		// }
+		return 0.0;
+	}
+	
 
-
+  public static boolean getLeftTrigger() {
+    return xbox.getRawAxis(2)>0.5;
   }
 
-  public static double getXboxYSpeed() {
-    // if the y axis is more pushed more than a certain amount then (to account for
-    // drivers accidentally
-    // pressing on buttons) then the raw axis will be returned. That value will then
-    // be used to drive
-    // the robot. otherwise the it will return 0 and it will not move. 1 is the Y
-    // Axis on the xbox controller
-    if (Math.abs(xbox.getRawAxis(1)) >= .2) {
-      SmartDashboard.putNumber("Yaxis", xbox.getRawAxis(1));
-      return (xbox.getRawAxis(1));
-    }
-    return 0.0;
+  public static boolean getRightTrigger() {
+    return xbox.getRawAxis(3)>0.5;
   }
-
-  public static double getXboxXSpeed() {
-    // if the x axis is more pushed more than a certain amount then (to account for
-    // drivers accidentally
-    // pressing on buttons) then the raw axis will be returned. That value will then
-    // be used to drive
-    // the robot. otherwise the it will return 0 and it will not move. 0 is the x
-    // Axis on the xbox controller
-    if (Math.abs(xbox.getRawAxis(5)) >= .2)
-    {
-        return (xbox.getRawAxis(5));
-    }
-    return 0.0;
-  }
-
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+  public Command getAutonomousCommand()
+  {
+    return new DoAuton(true);
   }
 
-  public Command getDrive()
+  public static Command getAutonLime()	
   {
-    return driving;
+    return auto;	    
   }
 }

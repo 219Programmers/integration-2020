@@ -18,7 +18,7 @@ public class ColorScanMove extends CommandBase {
    */
   public ColorScanMove() {
     // Use addRequirements() here to declare subsystem dependencies.
-    // addRequirements(Robot.m_robotContainer.m_cs, Robot.m_robotContainer.m_mot);
+    addRequirements(Robot.m_robotContainer.m_cs, Robot.m_robotContainer.m_mot);
   }
 
   // Called when the command is initially scheduled.

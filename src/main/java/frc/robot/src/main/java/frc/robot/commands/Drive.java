@@ -35,8 +35,8 @@ public class Drive extends CommandBase {
   @Override
   public void execute()
   {
-    xs = RobotContainer.getXboxXSpeed();
-    ys = RobotContainer.getXboxYSpeed();
+    xs = RobotContainer.getLeftSpeed();
+    ys = RobotContainer.getRightSpeed();
     RobotContainer.m_driveTrain.regDrive(xs, ys);
   
 

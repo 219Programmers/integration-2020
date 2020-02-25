@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Pneumatics;
 
 public class Shift extends CommandBase {
@@ -16,10 +17,11 @@ public class Shift extends CommandBase {
    * Creates a new Shift.
    */
   boolean shiftUp;
+
   public Shift(boolean typeShift) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.m_robotContainer.lPneumShift);
-    addRequirements(Robot.m_robotContainer.rPneumShift);
+    addRequirements(RobotContainer.lPneumShift);
+    addRequirements(RobotContainer.rPneumShift);
     shiftUp = typeShift;
   }
 
