@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
@@ -30,34 +31,50 @@ public class PulseCorral extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean scanned = RobotContainer.m_ds.spotted(1);
-    boolean scannedTwo = RobotContainer.m_ds2.spotted(1);
-    //Counts when a ball has been seen by the scanner and then stops beeing seen
-    if(lazerTrip && !scanned)
+    boolean scanned = RobotContainer.m_ds.spotted(11);
+    boolean scannedTwo = RobotContainer.m_ds2.spotted(11);
+    SmartDashboard.putBoolean("See ball", scanned);
+    if(!RevCor.isReverse)
     {
-      RobotContainer.gibShoot.ballAmount++;
-    }
-    lazerTrip = scanned;
-    if(RobotContainer.gibShoot.ballAmount<5 && scanned)
+    //Counts when a ball has been seen by the scanner and then stops beeing seen
+    if(scanned)
     {
       RobotContainer.gibShoot.runCor();
     }
-    else
-    {
+    else{
+      try{
+      Thread.sleep(250);
+      }
+      catch(Exception e){}
       RobotContainer.gibShoot.stopCor();
     }
-    //Decreases count when a ball has been seen by the scanner and then stops beeing seen
-    if(!scannedTwo && lazerTripTwo)
-    {
-      RobotContainer.gibShoot.ballAmount--;
-    }
-    lazerTripTwo = scannedTwo;
+  }
+    // if(lazerTrip && !scanned)
+    // {
+    //   RobotContainer.gibShoot.ballAmount++;
+    // }
+    // lazerTrip = scanned;
+    // if(RobotContainer.gibShoot.ballAmount<5 && scanned)
+    // {
+    //   RobotContainer.gibShoot.runCor();
+    // }
+    // else
+    // {
+    //   RobotContainer.gibShoot.stopCor();
+    // }
+    // //Decreases count when a ball has been seen by the scanner and then stops beeing seen
+    // if(!scannedTwo && lazerTripTwo)
+    // {
+    //   RobotContainer.gibShoot.ballAmount--;
+    // }
+    // lazerTripTwo = scannedTwo;
     // hiiiiiiiiiii simeon look at meeeeeeeeeeeee i am a computer and my pupils are dilateddddddddddddddddddddddddddd ;)
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.gibShoot.stopCor();
   }
 
   // Returns true when the command should end.

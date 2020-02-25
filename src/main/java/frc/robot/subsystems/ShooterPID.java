@@ -75,8 +75,8 @@ public class ShooterPID extends SubsystemBase {
   {
     // set point will set from the command if wanted for high or low shots (when testing is done)
     setPoint = setRef;
-    m_pidController.setReference(setPoint, ControlType.kVelocity);
-    m_pidRight.setReference(setPoint, ControlType.kVelocity);
+    m_pidController.setReference(-setPoint, ControlType.kDutyCycle);
+    m_pidRight.setReference(setPoint, ControlType.kDutyCycle);
     SmartDashboard.putNumber("Set Point", setPoint);
 
 
@@ -122,8 +122,8 @@ public class ShooterPID extends SubsystemBase {
     if(set != setPoint)
     {
       setPoint = set;
-      m_pidController.setReference(setPoint, ControlType.kVelocity);
-      m_pidRight.setReference(setPoint, ControlType.kVelocity);
+      m_pidController.setReference(-setPoint, ControlType.kDutyCycle);
+      m_pidRight.setReference(setPoint, ControlType.kDutyCycle);
     }
     SmartDashboard.putNumber("ProcessVariable: Left", m_encoderLeft.getVelocity());
 
@@ -139,8 +139,9 @@ public class ShooterPID extends SubsystemBase {
     m_pidController.setI(0);
 
     setPoint = rpm;
-    m_pidController.setReference(setPoint, ControlType.kVelocity);
-    m_pidRight.setReference(setPoint, ControlType.kVelocity);
+    m_pidController.setReference(setPoint, ControlType.kDutyCycle);
+    m_pidRight.setReference(-setPoint, ControlType.kDutyCycle);
+  
 
 
   }
@@ -162,8 +163,8 @@ public class ShooterPID extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
    // setPIDVal();
-   m_motorLeft.set(SmartDashboard.getNumber("SpeedF", 0.2));
-   m_motorRight.set(-SmartDashboard.getNumber("SpeedF", 0.2));
+  // m_motorLeft.set(SmartDashboard.getNumber("SpeedF", 0.2));
+   //m_motorRight.set(-SmartDashboard.getNumber("SpeedF", 0.2));
   }
 }
 

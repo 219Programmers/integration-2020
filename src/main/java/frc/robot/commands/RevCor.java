@@ -10,36 +10,44 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class HarvesterUpDown extends CommandBase {
+public class RevCor extends CommandBase {
   /**
-   * Creates a new HarvesterUpDown.
+   * Creates a new RevCor.
    */
-  public HarvesterUpDown() {
+
+   public static boolean isReverse;
+   private boolean notReverse;
+  public RevCor(boolean notReverse) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_harvestpneum, RobotContainer.m_harvester);
+  //  addRequirements(RobotContainer.gibShoot);
+    this.notReverse = notReverse;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(RobotContainer.m_harvester.getUp())
+    if(notReverse)
     {
-      RobotContainer.m_harvestpneum.SetB();
+      RobotContainer.gibShoot.runCor();
     }
-    else{
-      RobotContainer.m_harvestpneum.SetA();
+    else
+    {
+    RobotContainer.gibShoot.revCor();
     }
-    RobotContainer.m_harvester.setUp(!RobotContainer.m_harvester.getUp());
+    isReverse=true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.gibShoot.stopCor();
+    isReverse=false;
   }
 
   // Returns true when the command should end.

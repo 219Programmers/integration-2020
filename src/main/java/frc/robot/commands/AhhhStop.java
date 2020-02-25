@@ -7,29 +7,31 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class HarvesterUpDown extends CommandBase {
+public class AhhhStop extends CommandBase {
+
   /**
-   * Creates a new HarvesterUpDown.
+   * Creates a new AhhhStop.
    */
-  public HarvesterUpDown() {
+  public AhhhStop() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_harvestpneum, RobotContainer.m_harvester);
+    addRequirements(RobotContainer.m_harvester);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(RobotContainer.m_harvester.getUp())
+    if(RobotContainer.go)
     {
-      RobotContainer.m_harvestpneum.SetB();
+    RobotContainer.m_harvester.stopHarvest();
     }
     else{
-      RobotContainer.m_harvestpneum.SetA();
+      RobotContainer.m_harvester.harvest(SmartDashboard.getNumber("Index Speed", 0.3));
     }
-    RobotContainer.m_harvester.setUp(!RobotContainer.m_harvester.getUp());
+    RobotContainer.go = !RobotContainer.go;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,6 +47,6 @@ public class HarvesterUpDown extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

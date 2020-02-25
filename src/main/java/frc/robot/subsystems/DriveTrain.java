@@ -29,10 +29,17 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   private CANSparkMax sparkFL, sparkFR, sparkBL, sparkBR;
-  public CANEncoder encoderFL, encoderFR, encoderBL, encoderBR;
+  public CANEncoder encoderFL;
+public CANEncoder encoderFR;
+public CANEncoder encoderBL;
+public CANEncoder encoderBR;
+
+
   public DifferentialDrive daryl;
   private SpeedControllerGroup leftdrive, rightdrive;
   public boolean go;
+  public boolean reverse;
+ 
 
   
 
@@ -46,14 +53,13 @@ public class DriveTrain extends SubsystemBase {
     /* encoders have to be constructed seperately in order to afford the stuttering problem that
     occured in the Pre-Season of 2020. See documentation in the log for more 
     details regarding the encoder problem. */
-
-
+    reverse = false;
+    go = true;
     encoderFL = sparkFL.getEncoder();
     encoderFR = sparkFR.getEncoder();
     encoderBL = sparkBL.getEncoder();
     encoderBR = sparkBR.getEncoder();
 
-    go = true;
     leftdrive = new SpeedControllerGroup(sparkFL, sparkBL);
     rightdrive = new SpeedControllerGroup(sparkFR, sparkBR);
     daryl = new DifferentialDrive(leftdrive, rightdrive);
@@ -61,7 +67,11 @@ public class DriveTrain extends SubsystemBase {
 
   public void regDrive(double speedL, double speedR)
   {
-      daryl.tankDrive(speedL, speedR);
+    // value was tested by james.	    
+    double change = 1.3;	
+    // robot was going "BRRRRRRRRR" and was being mean to James. thus had to change the robot's behavior. 	
+
+    daryl.tankDrive(speedL/change, speedR/change);
 
   }
 

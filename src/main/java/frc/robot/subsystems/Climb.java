@@ -19,13 +19,16 @@ import frc.robot.Constants;
 public class Climb extends SubsystemBase {
   public CANSparkMax spark1;
   public CANEncoder encoderSpark1;
+  public boolean allowClimb;
   /**
    * Creates a new Climb.
    */
-  public Climb() {
+  public Climb() 
+  {
     spark1 = new CANSparkMax(Constants.CCAN, MotorType.kBrushless);
     encoderSpark1 = spark1.getEncoder();
-    spark1.setIdleMode(IdleMode.kBrake);
+    spark1.setIdleMode(IdleMode.kBrake); 
+    allowClimb = false;
   }
   //Makes motor spin one way
   public void climbUp(double speed)

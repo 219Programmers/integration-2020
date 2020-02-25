@@ -7,27 +7,30 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class IndexCorral extends SubsystemBase {
   /**
    * Creates a new IndexCorral.
    */
-  public static final TalonSRX beltMoto = new TalonSRX(Constants.BELT);
-
-  public static int ballAmount;
+  public static final CANSparkMax beltMoto = new CANSparkMax(Constants.BELT, MotorType.kBrushless);
+ 
+  public static int ballAmount = 5;
   
   public IndexCorral() {
-    
+    SmartDashboard.putNumber("Ball Amount", 5);
   }
 
   public void runIndCor() // run corral and indexer system
   {
-    beltMoto.set(ControlMode.PercentOutput, Constants.BELTSPEED);
+    beltMoto.set(Constants.BELTSPEED);
     
     ballAmount = 0;
   }
@@ -44,16 +47,21 @@ public class IndexCorral extends SubsystemBase {
 
   public void stopCor() // run just indexer
   {
-    beltMoto.set(ControlMode.PercentOutput, 0);  
+    beltMoto.set( 0);  
   }
 
   public void runCor() // rrun just corral
   {
-    beltMoto.set(ControlMode.PercentOutput, Constants.BELTSPEED);
+    beltMoto.set(-Constants.BELTSPEED);
+  }
+
+  public void revCor() // rrun just corral
+  {
+    beltMoto.set(Constants.BELTSPEED);
   }
   public void stopIndCor()
   {
-    beltMoto.set(ControlMode.PercentOutput, 0);
+    beltMoto.set( 0);
   }
 
 
@@ -62,5 +70,6 @@ public class IndexCorral extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    ballAmount = (int) SmartDashboard.getNumber("Ball Amount", 5);
   }
 }

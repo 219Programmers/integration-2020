@@ -36,7 +36,7 @@ public class Harvester extends SubsystemBase {
   //Runs the harvester at a select speed
   public void harvest(double speed)
   {
-    TalonA.set(ControlMode.PercentOutput, speed);
+    TalonA.set(ControlMode.PercentOutput, -speed);
     TalonB.set(ControlMode.PercentOutput, speed);
     // TalonC.set(ControlMode.PercentOutput, speed);
     indexMoto.set(ControlMode.PercentOutput, speed);
@@ -54,7 +54,7 @@ public class Harvester extends SubsystemBase {
   //Reverses harvester at a select speed
   public void harvestReverse(double speed)
   {
-    TalonA.set(ControlMode.PercentOutput, -speed);
+    TalonA.set(ControlMode.PercentOutput, speed);
     TalonB.set(ControlMode.PercentOutput, -speed);
     // TalonC.set(ControlMode.PercentOutput, -speed);
     indexMoto.set(ControlMode.PercentOutput, -speed);

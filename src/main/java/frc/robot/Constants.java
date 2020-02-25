@@ -24,47 +24,77 @@ public final class Constants {
     // public static int SPARKFR = 8;
     // public static int SPARKBL = 5;
     // public static int SPARKBR = 4;
-    public static int SPARKFL = 15;
-    public static int SPARKFR = 22;
-    public static int SPARKBL = 54;
-    public static int SPARKBR = 45;
+    public static int SPARKFL = 8;
+    public static int SPARKFR = 7;
+    public static int SPARKBL = 5;
+    public static int SPARKBR = 6;
    // public static int SPINPORT = 0;
-    public static int mfr = 9;
+  /*  public static int mfr = 9;
     public static int mfl = 3;
     public static int mbr = 8;
     public static int mbl = 4;
-
+*/
 	public static final double PROPSPEED = 1.3d;
+
     public static final int X_BUTTON_ID = 3;
 	public static final int A_BUTTON_ID = 1;
 	public static final int LEFT_TRIGGER_ID = 5;
 	public static final int RIGHT_TRIGGER_ID = 6;
 	public static final int XBOX_CONTROLLER_PORT = 0;
+
 	public static final int FRONTRIGHT = 9;
 	public static final int FRONTLEFT = 3;
 	public static final int BACKRIGHT = 8;
 	public static final int BACKLEFT = 4;
+	
 	public static final int Y_BUTTON_ID = 4;
+
 	public static final int PNEUM = 3;
 	public static final int SINGLEPNEUM = 0;
 	public static final int PNEUMCLOSE = 2;
+
+
 	public static final int LEFTSHIFTCLOSE = 1; //port
 	public static final int LEFTSHIFTOPEN = 0; //port
 	public static final int RIGHTSHIFTCLOSE = 3; //port
 	public static final int RIGHTSHIFTOPEN = 2; //port
-	public static final int PCMCAN = 0;
+
+
+	// pcm can id
+	public static final int PCMCAN = 20;
+
+
 	public static final double SOLSLIDETIME = 0.03;
     public static final double RIGHTSOLSLIDETIME = .05;
     public static final Port COLOR_SENSOR_PORT = Port.kOnboard;
 	public static final Port AHRSPort = Port.kMXP;
 	public static final I2C AHRSI2CPort = new I2C(Port.kMXP, 50); 
 	public static final double CLIMBSPEED = 0;
-	public static final int CCAN = 6;
-	public static final int BELT = 0;
-	public static final int IND = 0;
-	public static final double BELTSPEED = .3;
+
+	// climber pulley climb
+	public static final int CCAN = 10;
+	public static final int CLIMBTAL = 14;
+
+	// indexer motor
+	public static final int BELT = 4;
+
+	// corral motor
+	public static final int IND = 13;
+	
+	// sppeds for indexing and harvesting
+	public static final double BELTSPEED = .6;
 	public static final double INDSPEED = .3;
-	public static final int HARVESTERTALONA = 0;
-	public static final int HARVESTERTALONB = 0;
-	public static final int HARVESTERTALONC = 0;
+
+	// harvester 
+	public static final int HARVESTERTALONA = 15;
+	public static final int HARVESTERTALONB = 16;
+	
+
+	// shooter 
+	public static final int SHOOTER = 11;
+	public static final int SHOOTER2 = 12;
+
+
+	// talon for color is 17 or 18, 18 or 17 could also be the leveler
+	// WE HAVE TWO OTHER TALONS FOR USE
 }

@@ -7,8 +7,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.IndexCorral;
 
 public class PIDShooterCommand extends CommandBase {
   /**
@@ -19,6 +21,7 @@ public class PIDShooterCommand extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.sPID);
     setVal = setMe;
+    SmartDashboard.putNumber("PIDVal", 0.9);
   }
 
   // Called when the command is initially scheduled.
@@ -29,8 +32,10 @@ public class PIDShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    setVal = SmartDashboard.getNumber("PIDVal", 0.9);
     // sets the setpoint for how fast the motors should go with the PID working. 
     RobotContainer.sPID.setPIDVal(setVal);
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +48,6 @@ public class PIDShooterCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return IndexCorral.ballAmount == 0;
   }
 }
