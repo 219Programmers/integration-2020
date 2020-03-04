@@ -7,19 +7,29 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Harvester;
+import frc.robot.subsystems.IndexCorral;
 
 public class PulseCorral extends CommandBase {
   /**
    * Creates a new PulseCorral.
    */
+  public static DigitalInput limitSwitch;
   int numPowerCells; 
   boolean lazerTrip, lazerTripTwo;
   public PulseCorral() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.gibShoot, RobotContainer.m_ds, RobotContainer.m_ds2);
+    addRequirements(RobotContainer.gibShoot, RobotContainer.m_ds);///, RobotContainer.m_ds2);
+    limitSwitch = new DigitalInput(9);
+  }
+
+  public PulseCorral(int doesntMatter) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(RobotContainer.gibShoot, RobotContainer.m_ds);///, RobotContainer.m_ds2);
   }
 
   // Called when the command is initially scheduled.
@@ -31,24 +41,53 @@ public class PulseCorral extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean scanned = RobotContainer.m_ds.spotted(11);
-    boolean scannedTwo = RobotContainer.m_ds2.spotted(11);
+    
+    boolean scanned = RobotContainer.m_ds.spotted(11.5);
+   boolean scannedTwo = !limitSwitch.get();
     SmartDashboard.putBoolean("See ball", scanned);
-    if(!RevCor.isReverse)
+    SmartDashboard.putBoolean("See ball 2", scannedTwo);
+    if(Harvester.isAuton && !RevCor.isReverse)
     {
-    //Counts when a ball has been seen by the scanner and then stops beeing seen
-    if(scanned)
-    {
-      RobotContainer.gibShoot.runCor();
-    }
-    else{
-      try{
-      Thread.sleep(250);
+      if(scanned)
+      {
+        RobotContainer.gibShoot.runCor();
       }
-      catch(Exception e){}
+      else
+      {
+        try
+        {
+          Thread.sleep(150);
+        }
+        catch(Exception e){}
+        RobotContainer.gibShoot.stopCor();
+      }
+    }
+    else if(!RevCor.isReverse && !scannedTwo && !IndexCorral.isLimited)
+    {
+      if(scanned)
+      {
+        RobotContainer.gibShoot.runCor();
+      }
+      else
+      {
+        try
+        {
+          Thread.sleep(150);
+        }
+        catch(Exception e){}
+        RobotContainer.gibShoot.stopCor();
+      }
+      //if(scannedTwo)
+      {
+        //RobotContainer.m_harvester.stopIndex();
+      }
+    }
+    else if(IndexCorral.isLimited && !RevCor.isReverse)
+    {
       RobotContainer.gibShoot.stopCor();
     }
-  }
+  
+    //Counts when a ball has been seen by the scanner and then stops beeing seen
     // if(lazerTrip && !scanned)
     // {
     //   RobotContainer.gibShoot.ballAmount++;
@@ -75,6 +114,7 @@ public class PulseCorral extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.gibShoot.stopCor();
+    RobotContainer.m_harvester.stopIndex();
   }
 
   // Returns true when the command should end.

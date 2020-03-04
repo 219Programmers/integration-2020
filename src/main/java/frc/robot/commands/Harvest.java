@@ -10,6 +10,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Harvester;
 import frc.robot.subsystems.IndexCorral;
 
 public class Harvest extends CommandBase {
@@ -33,7 +34,23 @@ public class Harvest extends CommandBase {
   @Override
   public void execute() {
     //If its not reversed get right trigger and if its reversed get left trigger
-    if((RobotContainer.getRightTrigger()))
+    if(Harvester.isAuton)
+    {
+      if(Harvester.run)
+      {
+        RobotContainer.m_harvester.harvest(0.5);
+      }
+      else
+      {
+        RobotContainer.m_harvester.harvest(0);
+      }
+    }
+    else if(IndexCorral.isLimited && RobotContainer.m_ds.spotted(8) && !RevCor.isReverse)
+    {
+      RobotContainer.m_harvester.harvest(0);
+    }
+    else if(RevCor.isReverse);
+    else if((RobotContainer.getRightTrigger()))
     {
       reverse = false;
       RobotContainer.m_harvester.harvest(reverse? -0.5: 0.5);
@@ -51,23 +68,29 @@ public class Harvest extends CommandBase {
       //   RobotContainer.m_harvester.stopHarvest();
       // }
     }
-    if((RobotContainer.getLeftTrigger()))
+    else if((RobotContainer.getLeftTrigger()))
     {
       reverse = true;
       boolean scanned = false;
-      if(IndexCorral.ballAmount<5 && !(IndexCorral.ballAmount == 4 && scanned))
-      {
-        RobotContainer.m_harvester.harvest(reverse? -0.5: 0.5);
-      }
-      else
-      {
-        if(IndexCorral.ballAmount == 4 && scanned)
-        {
-          IndexCorral.ballAmount++;
-        }
-        RobotContainer.m_harvester.stopHarvest();
-      }
+      RobotContainer.m_harvester.harvest(reverse? -0.5: 0.5);
+      // if(IndexCorral.ballAmount<5 && !(IndexCorral.ballAmount == 4 && scanned))
+      // {
+      //   RobotContainer.m_harvester.harvest(reverse? -0.5: 0.5);
+      // }
+      // else
+      // {
+      //   if(IndexCorral.ballAmount == 4 && scanned)
+      //   {
+      //     IndexCorral.ballAmount++;
+      //   }
+      //   RobotContainer.m_harvester.stopHarvest();
+      // }
     }
+    else
+    {
+      RobotContainer.m_harvester.harvest(0);
+    }
+  
   }
 
   // Called once the command ends or is interrupted.

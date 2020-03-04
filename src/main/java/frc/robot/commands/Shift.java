@@ -21,7 +21,7 @@ public class Shift extends CommandBase {
   public Shift(boolean typeShift) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.lPneumShift);
-    addRequirements(RobotContainer.rPneumShift);
+    // addRequirements(RobotContainer.rPneumShift);
     shiftUp = typeShift;
   }
 
@@ -32,12 +32,12 @@ public class Shift extends CommandBase {
     if(shiftUp)
     {
       Robot.m_robotContainer.lPneumShift.SetA();
-      Robot.m_robotContainer.rPneumShift.SetA();
+      // Robot.m_robotContainer.rPneumShift.SetA();
     }
     else
     {
       Robot.m_robotContainer.lPneumShift.SetB();
-      Robot.m_robotContainer.rPneumShift.SetB();
+      // Robot.m_robotContainer.rPneumShift.SetB();
     }
   }
 

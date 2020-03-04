@@ -28,9 +28,9 @@ public class DoAuton extends SequentialCommandGroup {
   {
     if(!onTheWall)
     {
-      return (new SetYawZero().andThen(new DriveStraight(-50, 0), new LimeLineUp(), new MakeReadyShoot(), new DriveStraight(MakeReadyShoot.whereToMove, MakeReadyShoot.yawOfTarget), new LimeLineUp()/*, new Shoot()*/));
+      return (new SetYawZero().andThen(new DriveStraight(-50, 0), new AutonLime(), new MakeReadyShoot(), new DriveStraight(MakeReadyShoot.whereToMove, MakeReadyShoot.yawOfTarget), new AutonLime()/*, new Shoot()*/));
     }
-    return (new SetYawZero().andThen(new DriveStraight(-137.3175, 0), new DriveStraight(19.3745, 0)/*,new Shoot()*/, new DriveStraight(-150.957, 0), new DriveStraight(150.957, 0)/*,new Shoot()*/));
+    return (new SetYawZero().andThen(new AutonHarvest(true, true), new DriveStraight(83, 0), new ShootAndCorral(2.67), new AutonHarvest(true, true), new DriveStraight(72, 0), new WaitForSeconds(1)/*,new Shoot()*/, new DriveStraight(-72, 0), new ShootAndCorral(2.67)/*,new Shoot()*/, new AutonHarvest(false, false)));
   }
 
 }

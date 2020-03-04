@@ -18,10 +18,12 @@ public class Harvester extends SubsystemBase {
   TalonSRX TalonA;
   TalonSRX TalonB;
   // TalonSRX TalonC;
-  TalonSRX indexMoto;
+  public TalonSRX indexMoto;
  
   private boolean up;
- 
+  
+  public static boolean isAuton;
+  public static boolean run;
   /**
    * Creates a new Harvester.
    */
@@ -58,6 +60,11 @@ public class Harvester extends SubsystemBase {
     TalonB.set(ControlMode.PercentOutput, -speed);
     // TalonC.set(ControlMode.PercentOutput, -speed);
     indexMoto.set(ControlMode.PercentOutput, -speed);
+  }
+
+  public void stopIndex()
+  {
+    indexMoto.set(ControlMode.PercentOutput, 0);
   }
  
   

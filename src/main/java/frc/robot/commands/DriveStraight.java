@@ -42,8 +42,8 @@ public class DriveStraight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double lSpeed = (reverse?-1:1)*SmartDashboard.getNumber("Speed", 0.3);
-    double rSpeed = (reverse?-1:1)*SmartDashboard.getNumber("Speed", 0.3);
+    double lSpeed = (reverse?-1:1)*0.6;
+    double rSpeed = (reverse?-1:1)*0.6;
     distanceL = RobotContainer.m_driveTrain.encoderFL.getPosition()*(6*Math.PI)/6;
     distanceR = RobotContainer.m_driveTrain.encoderFR.getPosition()*(6*Math.PI)/6;
     if(RobotContainer.m_navx.ahrs.getYaw()<direction)
@@ -54,7 +54,7 @@ public class DriveStraight extends CommandBase {
       }
       else
       {
-        lSpeed+=-0.05*(RobotContainer.m_navx.ahrs.getYaw()-direction);
+        lSpeed+=0.05*(RobotContainer.m_navx.ahrs.getYaw()-direction);
       }
     }
     else{
@@ -64,7 +64,7 @@ public class DriveStraight extends CommandBase {
       }
       else
       {
-        rSpeed+=0.05*(RobotContainer.m_navx.ahrs.getYaw()-direction);
+        rSpeed+=-0.05*(RobotContainer.m_navx.ahrs.getYaw()-direction);
       }
     }
     RobotContainer.m_driveTrain.regDrive(lSpeed, rSpeed); 
@@ -74,6 +74,7 @@ public class DriveStraight extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.m_mot.stop();
+    RobotContainer.m_driveTrain.brakeModeForSec(0.3);
   }
 
   // Returns true when the command should end.

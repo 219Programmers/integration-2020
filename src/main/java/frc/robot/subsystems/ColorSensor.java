@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ColorSensor extends SubsystemBase {
-  private ColorSensorV3 scan = new ColorSensorV3(Port.kOnboard);
+  private ColorSensorV3 scan = new ColorSensorV3(Port.kMXP);
   public Color[] colors = { ColorMatch.makeColor(0.13, 0.42, 0.44),
       ColorMatch.makeColor(0.16, 0.57, 0.25), ColorMatch.makeColor(0.5, 0.35, 0.13),
       ColorMatch.makeColor(0.31, 0.55, 0.12) };

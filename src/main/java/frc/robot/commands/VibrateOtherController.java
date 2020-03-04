@@ -28,9 +28,15 @@ public class VibrateOtherController extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   // if(RobotContainer.joy.getRawAxis(3)>0)
+   if(RobotContainer.joy.getRawAxis(3)>0)
     {
-    //  RobotContainer.xbox.setRumble(RumbleType.kRightRumble, RobotContainer.joy.getRawAxis(3));
+      RobotContainer.xbox.setRumble(RumbleType.kRightRumble, RobotContainer.joy.getRawAxis(3));
+      RobotContainer.xbox.setRumble(RumbleType.kLeftRumble, RobotContainer.joy.getRawAxis(3));
+    }
+    else
+    {
+      RobotContainer.xbox.setRumble(RumbleType.kRightRumble, 0);
+      RobotContainer.xbox.setRumble(RumbleType.kLeftRumble, 0);
     }
   }
 

@@ -10,6 +10,7 @@ import com.revrobotics.CANEncoder;
 // imports for motors 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 // import for Motor Nums
@@ -28,7 +29,7 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
    */
-  private CANSparkMax sparkFL, sparkFR, sparkBL, sparkBR;
+  public CANSparkMax sparkFL, sparkFR, sparkBL, sparkBR;
   public CANEncoder encoderFL;
 public CANEncoder encoderFR;
 public CANEncoder encoderBL;
@@ -59,7 +60,10 @@ public CANEncoder encoderBR;
     encoderFR = sparkFR.getEncoder();
     encoderBL = sparkBL.getEncoder();
     encoderBR = sparkBR.getEncoder();
-
+    sparkFL.setIdleMode(IdleMode.kCoast);
+    sparkFR.setIdleMode(IdleMode.kCoast);
+    sparkBL.setIdleMode(IdleMode.kCoast);
+    sparkBR.setIdleMode(IdleMode.kCoast);
     leftdrive = new SpeedControllerGroup(sparkFL, sparkBL);
     rightdrive = new SpeedControllerGroup(sparkFR, sparkBR);
     daryl = new DifferentialDrive(leftdrive, rightdrive);
@@ -67,12 +71,15 @@ public CANEncoder encoderBR;
 
   public void regDrive(double speedL, double speedR)
   {
-    // value was tested by james.	    
-    double change = 1.3;	
+    // 1.3 was the og value that was tested by james.	    
+    double change = 1.5;	
     // robot was going "BRRRRRRRRR" and was being mean to James. thus had to change the robot's behavior. 	
 
     daryl.tankDrive(speedL/change, speedR/change);
-
+    //sparkFL.set(speedL/change);
+    // sparkBL.set(speedL/change);
+    //sparkFR.set(0.5);
+    // sparkBR.set(speedR/change);
   }
 
   public double getWheelPosFL()
@@ -100,6 +107,22 @@ public CANEncoder encoderBR;
     return encoderFL.getVelocity();
   }
 
+  public void brakeModeForSec(double breakForSeconds)
+  {
+    sparkFL.setIdleMode(IdleMode.kBrake);
+    sparkFR.setIdleMode(IdleMode.kBrake);
+    sparkBL.setIdleMode(IdleMode.kBrake);
+    sparkBR.setIdleMode(IdleMode.kBrake);
+    try
+    {
+      Thread.sleep((long)(breakForSeconds*1000));
+    }
+    catch(Exception e){}
+    sparkFL.setIdleMode(IdleMode.kCoast);
+    sparkFR.setIdleMode(IdleMode.kCoast);
+    sparkBL.setIdleMode(IdleMode.kCoast);
+    sparkBR.setIdleMode(IdleMode.kCoast);
+  }
   @Override
   public void periodic() 
   {

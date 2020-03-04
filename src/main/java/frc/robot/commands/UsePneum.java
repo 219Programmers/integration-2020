@@ -10,17 +10,25 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Pneumatics;
 
 public class UsePneum extends CommandBase {
   /**
    * @param port PCM port wired to open/A side of valve. Close/B side is wired to
    *             PCM next port. Assumes PCM CAN Id 0.
    */
+  Pneumatics pneum;
   public UsePneum() {
     addRequirements(RobotContainer.pneum);
+    pneum = RobotContainer.pneum;
+
     }
 
-    
+    public UsePneum(Pneumatics a) {
+      addRequirements(a);
+      pneum = a;
+
+      }
     // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
@@ -31,7 +39,9 @@ public class UsePneum extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    Robot.m_robotContainer.pneum.SetA();
+    
+    pneum.SetA();
+ 
   }
 
   // Called repeatedly when this Command is scheduled to run
