@@ -7,9 +7,11 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.commands.LimeLineUp;
+import frc.robot.subsystems.LimeVisionSubsystem;
 
 public class MakeReadyShoot extends CommandBase {
 
@@ -32,11 +34,14 @@ public class MakeReadyShoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    y = RobotContainer.limeSub.getYOffset();
-    heightOfLime = 0;
-    distance = (90.69-heightOfLime) / Math.tan(y+30);
+    y = LimeVisionSubsystem.table.getEntry("ty").getDouble(0.0);
+    heightOfLime = 24;
+    distance = (98-heightOfLime) / Math.tan(((y+17.8)* 3.14/180));
     whereToMove = shootDistance-distance;
     yawOfTarget =  RobotContainer.m_navx.getYaw(0) - angleOfLime;
+    SmartDashboard.putNumber("tangent", Math.tan(((y+17.8)* 3.14/180)));
+    SmartDashboard.putNumber("Distance to target", distance);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

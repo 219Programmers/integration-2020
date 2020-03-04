@@ -9,42 +9,41 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 
-public class Reverse extends CommandBase {
+public class CamSwitch extends CommandBase {
   /**
-   * Creates a new Reverse.
+   * Creates a new CamSwitch.
    */
-  public Reverse() {
+  public CamSwitch() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // flips the motors so the robot will go the other way yeye
-    RobotContainer.m_driveTrain.reverse = !RobotContainer.m_driveTrain.reverse;
-    if(RobotContainer.m_driveTrain.reverse)
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() 
+  {
+    if(Robot.cameraSelection.getName().equals(Robot.frontCam.getName()))
     {
       Robot.cameraSelection.setString(Robot.backCam.getName());
     }
-    if(!RobotContainer.m_driveTrain.reverse)
+    else if(Robot.cameraSelection.getName().equals(Robot.backCam.getName()))
+    {
+      Robot.cameraSelection.setString(Robot.frontCam.getName());
+    }
+    else
     {
       Robot.cameraSelection.setString(Robot.frontCam.getName());
     }
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    
-  }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
   }
 
   // Returns true when the command should end.

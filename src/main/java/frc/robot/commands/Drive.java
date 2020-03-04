@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveTrain;
 
 public class Drive extends CommandBase {
   /**
@@ -35,11 +36,19 @@ public class Drive extends CommandBase {
   @Override
   public void execute()
   {
-    xs = RobotContainer.getLeftSpeed();
-    ys = RobotContainer.getRightSpeed();
-    RobotContainer.m_driveTrain.regDrive(xs, ys);
-  
-
+    if(!AutonLime.disableDrive)
+    {
+      xs = RobotContainer.getLeftSpeed();
+      ys = RobotContainer.getRightSpeed();
+      if(!RobotContainer.m_driveTrain.reverse)
+      {
+        RobotContainer.m_driveTrain.regDrive(ys, xs);
+      }
+      else
+      {
+        RobotContainer.m_driveTrain.regDrive(-xs, -ys);
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.

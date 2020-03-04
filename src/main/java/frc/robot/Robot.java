@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -36,6 +38,9 @@ public class Robot extends TimedRobot {
   public static double x;
   public static double y;
   public static double area;
+  public static UsbCamera frontCam;
+  public static UsbCamera backCam;
+  public static NetworkTableEntry cameraSelection;
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
@@ -49,6 +54,10 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    frontCam = CameraServer.getInstance().startAutomaticCapture(0);
+    backCam = CameraServer.getInstance().startAutomaticCapture(1);
+
+    cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
   }
   /**
    * This function is called every robot packet, no matter the mode. Use this for
@@ -90,7 +99,7 @@ public class Robot extends TimedRobot {
 
 
 
-
+    
   }
 
   /**
@@ -126,31 +135,6 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
   
     CommandScheduler.getInstance().run();
-
-    //checks if there is a valid target and turns to the right if there isn't one
-    if(target == 0)
-    {
-      RobotContainer.m_driveTrain.regDrive(0.3, 0.3);
-    } else // when it finds the target
-    {
-      // adjusts so it isn't further left than -4 on the screen
-      if (x < -4) {
-        RobotContainer.m_driveTrain.regDrive(0.3, -0.35);
-      }
-      // adjusts so it isn't further right than 4 on the screen
-      else if (x > 4) {
-        RobotContainer.m_driveTrain.regDrive(0.35, -0.3);
-      } else // drives straight if the x value is between -4 and 4
-      {
-        RobotContainer.m_driveTrain.regDrive(0.3, -0.3);
-      }
-    }
-
-    // checks the vertical height, if it is the very top(its close) then it stops at
-    // that position on the screen
-    if (y > 15) {
-      RobotContainer.m_driveTrain.regDrive(0, 0);
-    }
 
 
   }

@@ -30,7 +30,7 @@ public class LimeVisionSubsystem extends SubsystemBase
     public static double LOOKANG = 0;
     public static double ROBOHGT = 0;
     public static double TARGETHGT = 0;
-
+	
 	public static NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
 	public static NetworkTable table = tableInstance.getTable("limelight");
 
@@ -147,7 +147,7 @@ public class LimeVisionSubsystem extends SubsystemBase
 	public double getDistance()
 	{
 
-		return (TARGETHGT - ROBOHGT) / Math.tan(table.getEntry("ty").getDouble(0.0) + MOUNTANG);
+		return (TARGETHGT - 29.5) / Math.tan(table.getEntry("ty").getDouble(0.0) + 110);
 	}
 
 }

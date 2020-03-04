@@ -28,9 +28,11 @@ public class ShooterPID extends SubsystemBase {
   /**
    * Creates a new ShooterPID.
    */
+
+   
   public ShooterPID() {
-    m_motorLeft = new CANSparkMax(Constants.SHOOTER, MotorType.kBrushless);
-    m_motorRight = new CANSparkMax(Constants.SHOOTER2, MotorType.kBrushless);
+    m_motorLeft = new CANSparkMax(Constants.SHOOTERLEFT, MotorType.kBrushless);
+    m_motorRight = new CANSparkMax(Constants.SHOOTERRIGHT, MotorType.kBrushless);
     m_motorLeft.restoreFactoryDefaults();
     m_motorRight.restoreFactoryDefaults();
     m_pidController = m_motorLeft.getPIDController();
@@ -53,7 +55,6 @@ public class ShooterPID extends SubsystemBase {
     m_pidController.setD(kD);
     m_pidController.setIZone(kIz);
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
-  
 
     m_pidRight.setP(kP);
     m_pidRight.setI(kI);
@@ -61,32 +62,30 @@ public class ShooterPID extends SubsystemBase {
     m_pidRight.setIZone(kIz);
     m_pidRight.setOutputRange(kMinOutput, kMaxOutput);
     
-
     SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("I Gain", kI);
     SmartDashboard.putNumber("D Gain", kD);
     SmartDashboard.putNumber("I Zone", kIz);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
+    SmartDashboard.putNumber("Set Point", setPoint);
 
   }
-// send the motors a reference point (revs per minute), and the PID will correct the motors back to that reference point if need be
+// send the motors a reference point (basic duty cycle (-1 to 1)), and the PID will correct the motors back to that reference point if need be
   public void setPIDVal(double setRef)
   {
     // set point will set from the command if wanted for high or low shots (when testing is done)
     setPoint = setRef;
     m_pidController.setReference(-setPoint, ControlType.kDutyCycle);
     m_pidRight.setReference(setPoint, ControlType.kDutyCycle);
-    SmartDashboard.putNumber("Set Point", setPoint);
-
-
+  
     double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
     double d = SmartDashboard.getNumber("D Gain", 0);
     double iz = SmartDashboard.getNumber("I Zone", 0);
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
-    double set = SmartDashboard.getNumber("Set Point", 0.1);
+    double set = 0;//SmartDashboard.getNumber("Set Point", 0);
     // these if statements are in case we change the values from smartdashboard.
     if((p != kP)) 
     { 
@@ -119,16 +118,16 @@ public class ShooterPID extends SubsystemBase {
       kMinOutput = min; 
       kMaxOutput = max; 
     }
-    if(set != setPoint)
-    {
-      setPoint = set;
-      m_pidController.setReference(-setPoint, ControlType.kDutyCycle);
-      m_pidRight.setReference(setPoint, ControlType.kDutyCycle);
-    }
+    // if(set != setPoint)
+    // {
+    //   setPoint = set;
+    //   m_pidController.setReference(-setPoint, ControlType.kDutyCycle);
+    //   m_pidRight.setReference(setPoint, ControlType.kDutyCycle);
+    // }
     SmartDashboard.putNumber("ProcessVariable: Left", m_encoderLeft.getVelocity());
 
   }
-// will stop the PID< but won't stop the setpoint from going on so the motors will continue going
+// will stop the PID but won't stop the setpoint from going on so the motors will continue going
   public void stopPID(double rpm)
   {
     m_pidRight.setP(0);
@@ -141,8 +140,6 @@ public class ShooterPID extends SubsystemBase {
     setPoint = rpm;
     m_pidController.setReference(setPoint, ControlType.kDutyCycle);
     m_pidRight.setReference(-setPoint, ControlType.kDutyCycle);
-  
-
 
   }
 // shuts the motors off
@@ -163,8 +160,8 @@ public class ShooterPID extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
    // setPIDVal();
-  // m_motorLeft.set(SmartDashboard.getNumber("SpeedF", 0.2));
-   //m_motorRight.set(-SmartDashboard.getNumber("SpeedF", 0.2));
+    SmartDashboard.putNumber("Left Shooter Motor Encoder", m_motorLeft.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Right Shooter Motor Encoder", m_motorRight.getEncoder().getVelocity());
   }
 }
 

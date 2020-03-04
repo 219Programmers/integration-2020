@@ -8,43 +8,39 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.Climb;
 
-public class Reverse extends CommandBase {
+public class ClimberPneumGo extends CommandBase {
+  boolean open;
   /**
-   * Creates a new Reverse.
+   * Creates a new ClimberPneumGo.
    */
-  public Reverse() {
+  public ClimberPneumGo(boolean open) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_driveTrain);
+    this.open = open;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // flips the motors so the robot will go the other way yeye
-    RobotContainer.m_driveTrain.reverse = !RobotContainer.m_driveTrain.reverse;
-    if(RobotContainer.m_driveTrain.reverse)
+    if(open)
     {
-      Robot.cameraSelection.setString(Robot.backCam.getName());
+      Climb.climberPneum.SetA();
     }
-    if(!RobotContainer.m_driveTrain.reverse)
+    else
     {
-      Robot.cameraSelection.setString(Robot.frontCam.getName());
+      Climb.climberPneum.SetB();
     }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
   }
 
   // Returns true when the command should end.

@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.PulseCorral;
+import frc.robot.commands.RevCor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -59,6 +61,17 @@ public class IndexCorral extends SubsystemBase {
   {
     beltMoto.set(Constants.BELTSPEED);
   }
+
+  public void runCor(double s) // rrun just corral
+  {
+    beltMoto.set(-s);
+  }
+
+  public void revCor(double s) // rrun just corral
+  {
+    beltMoto.set(s);
+  }
+
   public void stopIndCor()
   {
     beltMoto.set( 0);
@@ -66,10 +79,16 @@ public class IndexCorral extends SubsystemBase {
 
 
 
-
+  public static boolean isLimited = false;
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     ballAmount = (int) SmartDashboard.getNumber("Ball Amount", 5);
+    if(!RevCor.isReverse && !PulseCorral.limitSwitch.get())
+    {
+      isLimited = true;
+    }
+    SmartDashboard.putBoolean("isLimited", isLimited);
+    
   }
 }

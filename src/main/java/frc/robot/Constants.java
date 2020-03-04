@@ -91,8 +91,8 @@ public final class Constants {
 	
 
 	// shooter 
-	public static final int SHOOTER = 11;
-	public static final int SHOOTER2 = 12;
+	public static final int SHOOTERLEFT = 11;
+	public static final int SHOOTERRIGHT = 12;
 
 
 	// talon for color is 17 or 18, 18 or 17 could also be the leveler
